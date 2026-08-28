@@ -50,6 +50,6 @@ Also re-run a **lite autopsy** (n_pairs=12) on imagined weights: expect lower im
 
 - [x] `phi_imagined_data.py` + `train_phi_imagined.py`
 - [x] Train `lewm_phi_imagined_v1` + metrics/curves/console (best val corr **0.747**)
-- [ ] Multi-seed short+offset eval incl. E2_imagined _(running)_
-- [ ] Lite autopsy on new weights
-- [ ] `lewm_phi_imagined_v1_summary.md` + update `experiment_log.md`
+- [x] Multi-seed short+offset eval incl. E2_imagined — **offset gate FAIL**
+- [ ] Lite autopsy on new weights (optional; planning next = H2)
+- [x] `lewm_phi_imagined_v1_summary.md` + update `experiment_log.md`
