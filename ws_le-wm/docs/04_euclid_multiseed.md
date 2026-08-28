@@ -64,4 +64,10 @@ Report **per-seed** tables plus **mean ±** (sample std over 3 seeds). With n=20
 
 ## Results
 
-_Filled after campaign completes — see `lewm_phi_euclid_multiseed_summary.md`._
+See [`lewm_phi_euclid_multiseed_summary.md`](lewm_phi_euclid_multiseed_summary.md) (seeds 0–2 complete).
+
+| Check | Outcome |
+|-------|---------|
+| Short E2 > E1 | **PASS** (36.7±7.6% vs 16.7±7.6%) |
+| Short E2 ≥ E4 | **PASS** (36.7% vs 25.0%) |
+| Offset E2 ≥ E1 | **PASS but weak** (6.7±1.2% vs 4.7±3.1%; random 7.3% still highest) |

@@ -11,6 +11,7 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 | [02_implementation_plan.md](02_implementation_plan.md) | Phased implementation plan mapped to this repo |
 | [03_quasimetric_iql_t3.md](03_quasimetric_iql_t3.md) | Protocol T3 IQL reference (attempted; gate failed) |
 | [04_euclid_multiseed.md](04_euclid_multiseed.md) | Multi-seed Euclidean φ replicate (short + offset) |
+| [05_offset_autopsy.md](05_offset_autopsy.md) | Offset failure autopsy protocol (real vs imagined costs) |
 | [drafts.md](drafts.md) | Earlier brainstorm / FER notes (historical; not normative) |
 
 ## One-line claim (v1)
