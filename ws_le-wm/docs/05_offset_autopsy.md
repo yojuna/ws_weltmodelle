@@ -87,8 +87,8 @@ Use this to confirm H2/H4 under the real solver, not to re-litigate success %.
 
 ## Checklist
 
-- [ ] Implement `scripts/offset_autopsy.py` (Phase A)
-- [ ] Run Phase A → write `docs/lewm_phi_offset_autopsy_summary.md`
-- [ ] Map result → H1–H4
+- [x] Implement `scripts/offset_autopsy.py` (Phase A)
+- [x] Run Phase A → write `docs/lewm_phi_offset_autopsy_summary.md`
+- [x] Map result → H1–H4
 - [ ] Choose single fix; open a short follow-up note
 - [ ] Phase B only if needed
