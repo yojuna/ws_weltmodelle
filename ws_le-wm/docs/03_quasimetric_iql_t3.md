@@ -1,9 +1,9 @@
 # Protocol T3 — Quasimetric IQL (paper-faithful)
 
-**Status:** Implementation in progress  
+**Status:** Implemented + evaluated (2026-08-28) — **gate failed** (see `lewm_phi_iql_v1_summary.md`)  
 **Date opened:** 2026-08-28  
 **Trigger:** v3 offset n=50 pivot — hindsight `k` regression learns temporal structure but does not beat L2 CEM on the firm protocol (`lewm_phi_v3_summary.md`).  
-**Depends on:** `00_decisions.md` (D3 flip), `01_design_spec.md` Protocol T3, `02_implementation_plan.md` Phase 5.
+**Depends on:** `00_decisions.md` (D3), `01_design_spec.md` Protocol T3, `02_implementation_plan.md` Phase 5.
 
 This document is the **normative reference** for the T3 code path. If brainstorm notes disagree, this file + the cited papers win.
 
@@ -172,5 +172,5 @@ When this ships:
 - [x] `phi_iql_data.py` (terminal/random goals, exact `s==g`)
 - [x] `train_phi_iql.py` + logging under `lewm_phi_iql_v1/`
 - [x] Eval attach loads `distance_mode`
-- [ ] Matched E1/E2/E4 campaigns + `lewm_phi_iql_v1_summary.md`
-- [ ] Update `00_decisions.md` D3
+- [x] Matched E1/E2/E4 campaigns + `lewm_phi_iql_v1_summary.md`
+- [x] Update `00_decisions.md` D3
