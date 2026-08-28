@@ -9,6 +9,8 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 | [00_decisions.md](00_decisions.md) | Locked design decisions (source of truth for scope) |
 | [01_design_spec.md](01_design_spec.md) | Technical design: architecture, losses, data, train/eval protocols |
 | [02_implementation_plan.md](02_implementation_plan.md) | Phased implementation plan mapped to this repo |
+| [03_quasimetric_iql_t3.md](03_quasimetric_iql_t3.md) | Protocol T3 IQL reference (attempted; gate failed) |
+| [04_euclid_multiseed.md](04_euclid_multiseed.md) | Multi-seed Euclidean φ replicate (short + offset) |
 | [drafts.md](drafts.md) | Earlier brainstorm / FER notes (historical; not normative) |
 
 ## One-line claim (v1)
