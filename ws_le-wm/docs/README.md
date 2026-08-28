@@ -12,9 +12,21 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 | [03_quasimetric_iql_t3.md](03_quasimetric_iql_t3.md) | Protocol T3 IQL reference (attempted; gate failed) |
 | [04_euclid_multiseed.md](04_euclid_multiseed.md) | Multi-seed Euclidean φ replicate (short + offset) |
 | [05_offset_autopsy.md](05_offset_autopsy.md) | Offset failure autopsy protocol (real vs imagined costs) |
-| [06_imagined_phi.md](06_imagined_phi.md) | H1 fix: train φ on predictor futures |
+| [06_imagined_phi.md](06_imagined_phi.md) | H1 fix: train φ on predictor futures (eval failed) |
+| [07_status_synthesis.md](07_status_synthesis.md) | Consolidated results + next-step fork |
 | [experiment_log.md](experiment_log.md) | Chronological test log |
 | [drafts.md](drafts.md) | Earlier brainstorm / FER notes (historical; not normative) |
+
+## Campaign summaries
+
+| Summary | One-line |
+|---------|----------|
+| [lewm_phi_v2_summary.md](lewm_phi_v2_summary.md) | First short-horizon φ > L2 signal |
+| [lewm_phi_v3_summary.md](lewm_phi_v3_summary.md) | Offset n=50: no Euclidean φ beats L2 |
+| [lewm_phi_euclid_multiseed_summary.md](lewm_phi_euclid_multiseed_summary.md) | Short win replicates; offset still weak |
+| [lewm_phi_iql_v1_summary.md](lewm_phi_iql_v1_summary.md) | T3 IQL no-go |
+| [lewm_phi_offset_autopsy_summary.md](lewm_phi_offset_autopsy_summary.md) | H1+H2 diagnosis |
+| [lewm_phi_imagined_v1_summary.md](lewm_phi_imagined_v1_summary.md) | H1 train OK, offset worse |
 
 ## One-line claim (v1)
 
@@ -23,12 +35,14 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 ## Code anchors
 
 - Model: `le-wm/jepa.py`, `le-wm/module.py`
-- Train: `le-wm/train.py`, `le-wm/config/train/`
-- Eval / logging: `le-wm/eval.py`, `le-wm/eval_live.py`, `le-wm/eval_logging/`
+- Train: `le-wm/train_phi.py`, `train_phi_imagined.py`, `train_phi_iql.py`
+- Eval / logging: `le-wm/eval_live.py`, `le-wm/eval_logging/`, `scripts/offset_autopsy.py`
 - PushT eval config: `le-wm/config/eval/pusht.yaml`
 
-## Status
+## Status (2026-08-28 EOD)
 
-- **Decisions locked:** 2026-08-28 (see `00_decisions.md`)
-- **Env v1:** PushT only
-- **Not in v1:** IQL, freeze-`E` schedule, C3 privileged goals, Maze, FF-JEPA hierarchy, task success `S` in learning, `λ>0` trunk shaping
+- **Short-horizon:** Euclidean `φ` (v2) **beats L2** multi-seed — claim partially supported.
+- **Offset / firm gate:** no thin cost head reliably wins; absolute success ~2–8%.
+- **Tried & failed gates:** IQL-on-`φ` (T3); imagined-future `φ` (H1).
+- **Next:** choose fork in `07_status_synthesis.md` (H2 hybrid bookkeeping vs system change).
+- **Env v1:** PushT only · **D6** still in force unless Sep is explicitly flipped.

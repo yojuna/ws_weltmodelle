@@ -21,7 +21,7 @@
 |----|--------|--------|---------------------|
 | D1 | Deploy configurator | **C1** — few-shot latent anchor (encode 1–N example observations once → `z*`) | C3 privileged→latent eval adapter later |
 | D2 | Training schedule | **Joint** updates of `E`, `P`, `φ` | Freeze-`E` windows only if goals/`φ` unstable |
-| D3 | Reach loss | **Quasimetric IQL attempted (T3, 2026-08-28) — failed gate**; Euclidean hindsight-`k` remains available ablation | Next: true Sep value encoder or CEM cost calibration (see `lewm_phi_iql_v1_summary.md`) |
+| D3 | Reach loss | **Euclidean hindsight-`k` (best planning signal so far = v2)**; IQL T3 failed; imagined-φ H1 failed offset | H2 hybrid cost (eval); Sep / system change if offset stays dead (`07_status_synthesis.md`) |
 | D4 | Env scope v1 | **PushT** (reuse stack) | Shared multi-env API + Maze later |
 | D5 | Task success `S` in learning | **None** | Eval metrics may still use sim success |
 | D6 | Trunk shaping from reachability | **`φ` only (`λ ≈ 0`)** — stop-grad into `E` | Small `λ` sweep only if `φ` cannot read out progress |
