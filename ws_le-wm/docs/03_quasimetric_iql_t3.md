@@ -166,11 +166,11 @@ When this ships:
 
 ## 9. Implementation checklist
 
-- [ ] `iqe.py` + property tests
-- [ ] `iql_loss.py` + expectile / TD tests
-- [ ] `ReachabilityHead` `iqe_sum` + `value = -d`
-- [ ] `phi_iql_data.py` (terminal/random goals, exact `s==g`)
-- [ ] `train_phi_iql.py` + logging under `lewm_phi_iql_v1/`
-- [ ] Eval attach loads `distance_mode`
+- [x] `iqe.py` + property tests
+- [x] `iql_loss.py` + expectile / TD tests
+- [x] `ReachabilityHead` `iqe_sum` + `value = -d`
+- [x] `phi_iql_data.py` (terminal/random goals, exact `s==g`)
+- [x] `train_phi_iql.py` + logging under `lewm_phi_iql_v1/`
+- [x] Eval attach loads `distance_mode`
 - [ ] Matched E1/E2/E4 campaigns + `lewm_phi_iql_v1_summary.md`
 - [ ] Update `00_decisions.md` D3
