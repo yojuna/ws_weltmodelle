@@ -1,0 +1,49 @@
+# ws_weltmodelle — local world-models workspace
+#
+# Contains forks / working trees for JEPA world-model research
+# (LeWM, DINO-WM, notes). Upstream LeWM originally tracked at:
+#   https://github.com/lucas-maes/le-wm.git
+
+# Python
+.venv/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Envs / secrets
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Hydra / training outputs
+outputs/
+multirun/
+*.ckpt
+*.pt
+!**/config/**/*.yaml
+
+# Local caches (checkpoints, datasets, videos)
+**/stablewm/checkpoints/
+**/stablewm/datasets/
+**/stablewm/videos/
+**/.stable-wm/
+
+# Large / generated media (keep small metric JSON via force-add if needed)
+**/renders/
+**/eval_results/**/plan_debug/
+**/eval_results/**/*.mp4
+**/eval_results/**/*.png
+**/eval_results/**/*.jpg
+
+# Wandb
+wandb/
+*.pdf
