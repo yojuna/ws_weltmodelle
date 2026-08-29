@@ -21,10 +21,10 @@
 |----|--------|--------|---------------------|
 | D1 | Deploy configurator | **C1** — few-shot latent anchor (encode 1–N example observations once → `z*`) | C3 privileged→latent eval adapter later |
 | D2 | Training schedule | **Joint** updates of `E`, `P`, `φ` | Freeze-`E` windows only if goals/`φ` unstable |
-| D3 | Reach loss | **Euclidean hindsight-`k` (best planning signal so far = v2)**; IQL T3 failed; imagined-φ H1 failed offset | H2 hybrid cost (eval); Sep / system change if offset stays dead (`07_status_synthesis.md`) |
-| D4 | Env scope v1 | **PushT** (reuse stack) | Shared multi-env API + Maze later |
+| D3 | Reach loss | **Euclidean hindsight-`k` (best planning signal so far = v2)**; IQL T3 failed; imagined-φ H1 failed offset | No more thin-head churn. H2 hybrid is optional bookkeeping. Sep / hierarchy gated by [`09_phase_b_plan.md`](09_phase_b_plan.md) |
+| D4 | Env | **PushT** is the v1 claim env | Reacher is a Phase B **diagnostic** env (live_reset + probes), not a second claim |
 | D5 | Task success `S` in learning | **None** | Eval metrics may still use sim success |
-| D6 | Trunk shaping from reachability | **`φ` only (`λ ≈ 0`)** — stop-grad into `E` | Small `λ` sweep only if `φ` cannot read out progress |
+| D6 | Trunk shaping from reachability | **`φ` only (`λ ≈ 0`)** — stop-grad into `E` | Held pending B1 **state-factor** + intervention gate in `09`. Do not flip on on-path Spearman(`k`) |
 
 ---
 
@@ -32,7 +32,7 @@
 
 - Per-step / streaming goal images in the control loop (LeWM/DINO default)
 - Family A (in-scene goal as the only task interface)
-- FF-JEPA latent planner `G` / hierarchy
+- FF-JEPA latent planner `G` / hierarchy — **re-opened as a Phase B candidate**, not enabled. Trigger in `09` (drift@CEM-horizon / `T` sweep / residual Axis G).
 - Dense rewards or TD-MPC-style reward latents
 - Affordance / arena self-play outer loop as a required component
 - Proposer–solver asymmetric self-play

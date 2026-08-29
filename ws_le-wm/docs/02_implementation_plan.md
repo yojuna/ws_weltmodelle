@@ -3,6 +3,8 @@
 **Depends on:** `00_decisions.md`, `01_design_spec.md`  
 **Stack:** `le-wm/` + stable-worldmodel planning + existing PushT eval logging
 
+**Status (2026-08-29):** Phases 0–4 of this document are **done** (Phase A campaigns). The v1 “go / pivot” is recorded in `07` / `08`: short-horizon φ > L2 is supported; offset / φ-alone is not. Remaining engineering follows [`09_phase_b_plan.md`](09_phase_b_plan.md); what is coded vs unrun is in [`10_implementation_status.md`](10_implementation_status.md). Do not start another cost-head phase from this file.
+
 ---
 
 ## Guiding rules

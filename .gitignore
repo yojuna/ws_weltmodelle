@@ -4,9 +4,10 @@
 # (LeWM, DINO-WM, notes). Upstream LeWM originally tracked at:
 #   https://github.com/lucas-maes/le-wm.git
 
-# Python
-.venv/
-**/__pycache__/
+# GPU container — leftover host caches/home (runtime venv is in the image)
+docker/.venv/
+docker/.cache/
+docker/home/
 *.py[cod]
 *.egg-info/
 .pytest_cache/

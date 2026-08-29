@@ -1,7 +1,9 @@
 # Status synthesis — Phase A evidence (2026-08-28)
 
 **Purpose:** Single place that consolidates what we measured, what it means for the v1 claim, and what is *not* settled.  
-**Chronicle:** [`experiment_log.md`](experiment_log.md) · protocols `03`–`06`.
+**Chronicle:** [`experiment_log.md`](experiment_log.md) · protocols `03`–`06`.  
+**Full writeup:** [`08_phase_a_report.md`](08_phase_a_report.md) (design + every campaign in one narrative).  
+**Phase B:** [`09_phase_b_plan.md`](09_phase_b_plan.md) — diagnose geometry vs predictor-horizon vs representation; do not iterate cost heads.
 
 ---
 
@@ -20,9 +22,9 @@ All rows: frozen `hf_pusht`, C1 goal cache, kinematic eval banks. Multi-seed = m
 | Condition | Seeds | Success % | Notes |
 |-----------|-------|-----------|--------|
 | E1 L2 `z` | 0–2 | **16.7±7.6** | Baseline |
-| E2 Euclidean v2 | 0–2 | **36.7±7.6** | **Replicated win** |
+| E2 Euclidean v2 | 0–2 | **36.7±7.6** | Replicated; see E4 for how much is not “learned reachability” |
 | E2 Imagined-φ | 0–2 | 31.7±10.4 | ≥ E1; &lt; v2 |
-| E4 random `φ` | 0–2 | 26.7±2.9 | |
+| E4 random `φ` | 0–2 | **25.0±8.7** Euclid / 26.7±2.9 imagined | Matched Euclid random is 25.0; 26.7 is a different campaign’s E4 |
 | E2 IQL (seed 0 only) | 0 | 10.0 | Worse than E1 & E4 |
 
 ### Offset (n=50) — firm protocol
@@ -35,7 +37,7 @@ All rows: frozen `hf_pusht`, C1 goal cache, kinematic eval banks. Multi-seed = m
 | E2 Imagined-φ | 0–2 | **2.0±0.0** | **Worse** than v2 & E1 |
 | E2 IQL (seed 0) | 0 | 4.0 | ≤ E1 |
 
-\*Random offset mean depends on campaign; euclid multiseed had 7.3±2.3, imagined campaign 4.0±2.0 (different bank draws).
+\*Random offset mean depends on campaign (Euclid 7.3±2.3, imagined 4.0±2.0). Same `--seed` **reuses the same pairs**; the swing is random-`φ` re-init, not redrawn banks.
 
 ### Training diagnostics (not planning)
 
@@ -86,25 +88,14 @@ H1 fix (train on ẑ) **failed** planning gate despite better corr → seeing �
 
 ---
 
-## Decision fork (reconsideration)
+## Decision fork (superseded for planning)
 
-Two coherent next moves — pick **one** research posture:
+The A vs B fork below is **historical**. Planning now follows [`09_phase_b_plan.md`](09_phase_b_plan.md): stop cost-head churn; diagnose **geometric hardness** vs **predictor drift at CEM horizon** vs **linear state decodability**; pick one architecture only after those gates.
 
-### A. Close the thin-`φ` cost loop (small, remaining autopsy item)
+### A. Close the thin-`φ` cost loop — **demoted to optional bookkeeping**
 
-**H2 hybrid / normalize** at eval: `cost = L2 + α·d_φ` with **v2** weights.  
-**Proves:** whether `φ` adds anything once L2 carries CEM dynamic range.  
-**Does not prove:** high PushT success or robot readiness.  
-**Effort:** low (no retrain).
+**H2 hybrid / normalize** at eval: `cost = L2 + α·d_φ` with **v2** weights (or z-score `d_φ`). Run only if a reviewer forces it.
 
-### B. Declare Phase A cost-head largely capped; change the system
+### B. Change the planning system — **do not guess which module**
 
-Treat offset ~5% for all heads as evidence that **open-loop CEM + frozen predictor + thin cost** is the bottleneck. Next experiments leave pure “better `d_φ`”:
-
-- more aggressive **receding horizon / shorter imagination**, or  
-- **policy / residual** on top of JEPA, or  
-- **Sep** value encoder (explicit D6 exception), documented as a decision flip.
-
-**Proves:** whether the *architecture* of planning—not the readout loss—is what fails.
-
-**Recommendation:** If the goal is still “falsify thin-`φ` under D6,” do **A** once, then stop cost-head churn. If the goal is “make PushT actually work toward robots,” prefer **B** and treat A as optional bookkeeping.
+Offset ~2–10% for all heads says the **cost head** is not the bottleneck. Hierarchy / residual / Sep are candidates in `09`, each with an empirical trigger. “Shorten imagination” is a **CEM `horizon` sweep**, not a re-read of short vs offset pair_mode (both are 25-step windows with different pose bands).

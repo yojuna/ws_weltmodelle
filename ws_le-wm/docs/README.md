@@ -6,6 +6,9 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 
 | Doc | Purpose |
 |-----|---------|
+| [09_phase_b_plan.md](09_phase_b_plan.md) | Phase B: diagnose geometry vs drift vs representation |
+| [10_implementation_status.md](10_implementation_status.md) | What is in the tree vs still to run |
+| [08_phase_a_report.md](08_phase_a_report.md) | Full narrative: design, every campaign, results |
 | [00_decisions.md](00_decisions.md) | Locked design decisions (source of truth for scope) |
 | [01_design_spec.md](01_design_spec.md) | Technical design: architecture, losses, data, train/eval protocols |
 | [02_implementation_plan.md](02_implementation_plan.md) | Phased implementation plan mapped to this repo |
@@ -37,12 +40,14 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 - Model: `le-wm/jepa.py`, `le-wm/module.py`
 - Train: `le-wm/train_phi.py`, `train_phi_imagined.py`, `train_phi_iql.py`
 - Eval / logging: `le-wm/eval_live.py`, `le-wm/eval_logging/`, `scripts/offset_autopsy.py`
+- Phase B diagnostics: `le-wm/phase_b.py`, `scripts/latent_dump.py`, `latent_probe.py`, `predictor_drift.py`, `run_horizon_sweep.sh`
 - PushT eval config: `le-wm/config/eval/pusht.yaml`
 
-## Status (2026-08-28 EOD)
+## Status (2026-08-29)
 
-- **Short-horizon:** Euclidean `φ` (v2) **beats L2** multi-seed — claim partially supported.
-- **Offset / firm gate:** no thin cost head reliably wins; absolute success ~2–8%.
+- **Short-horizon:** Euclidean `φ` (v2) **beats L2** multi-seed (36.7 vs 16.7); matched random `φ` is **25.0** — phenomenon replicated, only partly learned reachability.
+- **Offset / firm gate:** no thin cost head reliably wins; absolute success ~2–10%.
 - **Tried & failed gates:** IQL-on-`φ` (T3); imagined-future `φ` (H1).
-- **Next:** choose fork in `07_status_synthesis.md` (H2 hybrid bookkeeping vs system change).
-- **Env v1:** PushT only · **D6** still in force unless Sep is explicitly flipped.
+- **Next:** Phase B diagnose-first ([`09_phase_b_plan.md`](09_phase_b_plan.md)) — not another cost head. D6 held pending state-factor probes.
+- **Code:** B1/B2 dump/probe/drift + CEM `--horizon` CLI are landed; GPU runs pending ([`10_implementation_status.md`](10_implementation_status.md)). GPU work in `docker/` (baked `/opt/venv`, named container `weltmodelle-lewm`).
+- **Env:** PushT is the claim env; Reacher is a Phase B diagnostic env.

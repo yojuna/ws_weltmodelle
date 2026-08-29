@@ -38,7 +38,15 @@ Running chronicle of tests. Normative protocols: `03`–`07`.
 
 ## Next-step fork (see `07_status_synthesis.md`)
 
-| Option | Action | When to choose |
-|--------|--------|----------------|
-| **A** | H2 hybrid eval-only (`L2 + α d_φ`, v2 weights) | Close autopsy loop; still invested in thin cost under D6 |
-| **B** | Stop cost-head churn; change planning system | Priority is task success / robot path, not another `φ` ablation |
+Historical A vs B table is **superseded for planning** by [`09_phase_b_plan.md`](09_phase_b_plan.md). H2 hybrid is optional bookkeeping only.
+
+---
+
+## 2026-08-29 — Phase B engineering (no GPU numbers yet)
+
+| Step | What | Outcome |
+|------|------|---------|
+| Spec | Diagnose geometry vs CEM-horizon drift vs linear state; stop cost-head churn | [`09_phase_b_plan.md`](09_phase_b_plan.md) |
+| Code | Dump / probe / drift / `--horizon` CLI; episode-split `train_phi`; C1 cache key; Reacher state concat | [`10_implementation_status.md`](10_implementation_status.md) |
+| Runtime | CUDA 12.6 image with baked `/opt/venv`; named container `weltmodelle-lewm`, `restart: unless-stopped` | `docker/` |
+| B1/B2 runs | latent dump, probes, drift@h=5, CEM `T` sweep | **Pending** — D6 still held |
