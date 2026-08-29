@@ -3,7 +3,7 @@
 **Date:** 2026-08-29  
 **Repo:** `ws_weltmodelle` `feat/lewm-phi` · submodule `ws_le-wm/le-wm` same branch  
 **Normative plan:** [`09_phase_b_plan.md`](09_phase_b_plan.md)  
-**Runtime:** [`../../docker/README.md`](../../docker/README.md)
+**Runtime:** [`../../docs/docker_usage.md`](../../docs/docker_usage.md)
 
 This file records **what is in the tree**, not new experimental numbers. B1/B2 dumps, probes, and the CEM `T` sweep have **not been run** yet. Do not treat this as a D6 or hierarchy flip.
 
@@ -52,9 +52,7 @@ Shared helpers in `le-wm/phase_b.py`: encode frames, open-loop imagine with true
 
 ### 2.3 Docker (workspace `docker/`)
 
-Python is **baked into the image** at `/opt/venv` (torch cu126, `stable-worldmodel[train,env]`, scikit-learn, matplotlib). Entrypoint is env-only (`PATH`, `STABLEWM_HOME`, MuJoCo/X11). Named container `weltmodelle-lewm` with `restart: unless-stopped`. Workspace bind `..:/workspace` is the source of truth for code, `$STABLEWM_HOME`, and `eval_results`. No named Docker volumes. Prefer `./run.sh stop`/`start` over `compose down`.
-
-Host `ws_le-wm/le-wm/.venv` is not used. Do not recreate it.
+See [`../../docs/docker_usage.md`](../../docs/docker_usage.md). Python is baked at `/opt/venv`. Named container `weltmodelle-lewm` (no restart-on-boot). Host bind is the source of truth. Do not recreate `ws_le-wm/le-wm/.venv`.
 
 ---
 

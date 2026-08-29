@@ -49,5 +49,5 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 - **Offset / firm gate:** no thin cost head reliably wins; absolute success ~2–10%.
 - **Tried & failed gates:** IQL-on-`φ` (T3); imagined-future `φ` (H1).
 - **Next:** Phase B diagnose-first ([`09_phase_b_plan.md`](09_phase_b_plan.md)) — not another cost head. D6 held pending state-factor probes.
-- **Code:** B1/B2 dump/probe/drift + CEM `--horizon` CLI are landed; GPU runs pending ([`10_implementation_status.md`](10_implementation_status.md)). GPU work in `docker/` (baked `/opt/venv`, named container `weltmodelle-lewm`).
+- **Code:** B1/B2 dump/probe/drift + CEM `--horizon` CLI are landed; GPU runs pending ([`10_implementation_status.md`](10_implementation_status.md)). GPU work: [`../../docs/docker_usage.md`](../../docs/docker_usage.md).
 - **Env:** PushT is the claim env; Reacher is a Phase B diagnostic env.

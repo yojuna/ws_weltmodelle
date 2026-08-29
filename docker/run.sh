@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 # Dedicated GPU container — never `compose run` (that fights container_name).
-# Image already has the venv. This script starts the named container and execs.
 #
-#   ./run.sh              start if needed, then interactive bash
-#   ./run.sh up           start (no rebuild); survives reboot via unless-stopped
-#   ./run.sh up --build   rebuild image then start
-#   ./run.sh exec <cmd>   exec in the running container
-#   ./run.sh <cmd...>     same as exec (after ensuring the container is up)
-#   ./run.sh stop         docker compose stop  (container remains; restart: unless-stopped)
-#   ./run.sh start        docker compose start (after stop)
+#   ./run.sh              start if needed, bash, then graceful stop
+#   ./run.sh <cmd...>     start if needed, run cmd, then graceful stop
+#   ./run.sh exec <cmd>   same as above
+#   ./run.sh up           start and leave running (until stop or host shutdown)
+#   ./run.sh up --build   rebuild image then up
+#   ./run.sh stop         SIGTERM + grace period (container object remains)
+#   ./run.sh start        start an existing stopped container (leave running)
 #
-# Do not `compose down` unless you intend to remove the container.
-# Bind-mounted /workspace is the source of truth for code and results.
+# No restart-on-boot. Bind-mounted /workspace keeps code and results.
 set -euo pipefail
 cd "$(dirname "$0")"
 
 export HOST_UID="$(id -u)"
 export HOST_GID="$(id -g)"
+export VIDEO_GID="$(getent group video | cut -d: -f3 || echo 44)"
+export RENDER_GID="$(getent group render | cut -d: -f3 || echo 110)"
 
 mkdir -p home
 
@@ -24,10 +24,14 @@ if [[ -n "${DISPLAY:-}" ]]; then
   xhost +SI:localuser:"$(id -un)" >/dev/null 2>&1 || xhost +local: >/dev/null 2>&1 || true
 fi
 
+is_running() {
+  docker compose ps --status running --services 2>/dev/null | grep -qx lewm
+}
+
 wait_running() {
   local i
   for i in $(seq 1 60); do
-    if docker compose ps --status running --services 2>/dev/null | grep -qx lewm; then
+    if is_running; then
       return 0
     fi
     sleep 1
@@ -39,7 +43,7 @@ wait_running() {
 
 ensure_up() {
   local build_flag="${1:-}"
-  if docker compose ps --status running --services 2>/dev/null | grep -qx lewm; then
+  if is_running; then
     return 0
   fi
   if [[ "$build_flag" == "--build" ]]; then
@@ -50,6 +54,21 @@ ensure_up() {
   wait_running
 }
 
+# Start if needed, run the command, stop only if this invocation started it.
+run_session() {
+  local started_here=0
+  if ! is_running; then
+    started_here=1
+    ensure_up
+  fi
+  local st=0
+  docker compose exec lewm "$@" || st=$?
+  if [[ "$started_here" -eq 1 ]]; then
+    docker compose stop
+  fi
+  return "$st"
+}
+
 if [[ "${1:-}" == "stop" ]]; then
   exec docker compose stop
 fi
@@ -57,28 +76,28 @@ fi
 if [[ "${1:-}" == "start" ]]; then
   docker compose start
   wait_running
-  echo "container weltmodelle-lewm is running.  ./run.sh exec bash"
+  echo "container weltmodelle-lewm is running (will not auto-start on reboot).  ./run.sh stop when done"
   exit 0
 fi
 
 if [[ "${1:-}" == "up" ]]; then
   shift
   ensure_up "${1:-}"
-  echo "container weltmodelle-lewm is up (restart: unless-stopped).  ./run.sh exec bash"
+  echo "container weltmodelle-lewm is up (no restart-on-boot).  ./run.sh stop when done"
   exit 0
 fi
 
 if [[ "${1:-}" == "exec" ]]; then
   shift
-  ensure_up
   if [[ $# -eq 0 ]]; then
     set -- bash
   fi
-  exec docker compose exec lewm "$@"
+  run_session "$@"
+  exit $?
 fi
 
-ensure_up
 if [[ $# -eq 0 ]]; then
-  exec docker compose exec lewm bash
+  set -- bash
 fi
-exec docker compose exec lewm "$@"
+run_session "$@"
+exit $?

@@ -48,5 +48,5 @@ Historical A vs B table is **superseded for planning** by [`09_phase_b_plan.md`]
 |------|------|---------|
 | Spec | Diagnose geometry vs CEM-horizon drift vs linear state; stop cost-head churn | [`09_phase_b_plan.md`](09_phase_b_plan.md) |
 | Code | Dump / probe / drift / `--horizon` CLI; episode-split `train_phi`; C1 cache key; Reacher state concat | [`10_implementation_status.md`](10_implementation_status.md) |
-| Runtime | CUDA 12.6 image with baked `/opt/venv`; named container `weltmodelle-lewm`, `restart: unless-stopped` | `docker/` |
+| Runtime | CUDA 12.6 image with baked `/opt/venv`; named container `weltmodelle-lewm` (start via `run.sh`, no reboot autostart) | `docker/` |
 | B1/B2 runs | latent dump, probes, drift@h=5, CEM `T` sweep | **Pending** — D6 still held |

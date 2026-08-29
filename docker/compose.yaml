@@ -9,7 +9,10 @@ services:
     container_name: weltmodelle-lewm
     working_dir: /workspace/ws_le-wm/le-wm
     user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
-    restart: unless-stopped
+    # Do not auto-start on host boot. ./run.sh starts it; compose stop on session exit.
+    restart: "no"
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
     deploy:
       resources:
         reservations:
@@ -21,8 +24,15 @@ services:
     stdin_open: true
     tty: true
     init: true
+    # DRI nodes: card* → video (44), renderD* → render (110) on this host.
+    # UIDs/GIDs come from run.sh so ACLs and group bits match the workstation.
+    group_add:
+      - "${VIDEO_GID:-44}"
+      - "${RENDER_GID:-110}"
+    devices:
+      - /dev/dri
     # Whole workspace on the host. No named/anonymous Docker volumes.
-    # Container is kept (restart: unless-stopped); work lives on this bind.
+    # Work lives on this bind; the container is not auto-restarted.
     volumes:
       - ..:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
