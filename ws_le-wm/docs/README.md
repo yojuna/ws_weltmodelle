@@ -7,8 +7,9 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 | Doc | Purpose |
 |-----|---------|
 | [00_decisions.md](00_decisions.md) | Locked design decisions (source of truth for scope) |
-| [14_phase_c_alt_plan.md](14_phase_c_alt_plan.md) | **Current plan:** localize rollout fidelity; CA0 first |
-| [15_viz_toolkit_spec.md](15_viz_toolkit_spec.md) | Dump-driven viz toolkit (not built); PCA-on-real, apply-to-imagined |
+| [14_phase_c_alt_plan.md](14_phase_c_alt_plan.md) | **Current plan:** localize rollout fidelity; CA0 reported INFIDELITY; CA-train not started |
+| [15_viz_toolkit_spec.md](15_viz_toolkit_spec.md) | Viz toolkit **v3** (upgrade spec: tiers + scientific report) |
+| [15_viz_toolkit_spec_v0.md](15_viz_toolkit_spec_v0.md) | Viz toolkit **v0** (implemented: `le-wm/viz.py` Figs 1–7) |
 | [13_phase_c0_report.md](13_phase_c0_report.md) | Phase C0 confirmation gate (liveness, oracle, seeds, rank) |
 | [12a_c03_redo.md](12a_c03_redo.md) | C0.3-redo: live-bank oracle, two-outcome gate |
 | [12_phase_c_plan.md](12_phase_c_plan.md) | Phase C spec: C0 gate then actor / C-alt (C1 gated off) |
@@ -50,6 +51,7 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 - Eval / logging: `le-wm/eval_live.py`, `le-wm/eval_logging/`, `scripts/offset_autopsy.py`
 - Phase B diagnostics: `le-wm/phase_b.py`, `scripts/latent_dump.py`, `latent_probe.py`, `predictor_drift.py`, `run_horizon_sweep.sh`
 - C0 oracle: `eval_logging/oracle_bank.py`, `scripts/oracle_bank.py`, `scripts/oracle_imagine.py`
+- C-alt dumps / viz: `scripts/closed_loop_imagine.py`, `drift_by_event.py`, `le-wm/viz.py`, `scripts/viz.py`, `scripts/viz_report.py`
 - PushT eval config: `le-wm/config/eval/pusht.yaml`
 
 ## Status (2026-08-30)
@@ -59,5 +61,6 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 - **Tried & failed gates:** IQL-on-`φ` (T3); imagined-future `φ` (H1).
 - **Phase B B1/B2 (run):** PushT linear state R² ~0.70, live `block_x` intervention hit-rate 1.0 → **D6 keep**. Offset L2 stays **4–6%** for T=2,3,5,8. Writeup: [`11_phase_b_report.md`](11_phase_b_report.md).
 - **Phase C0 (run):** `P` is action-live on diverse actions (shuffle−true gap 1.77). Live-bank oracle: replay **94%**, CEM-L2 **50%**, imagine toward-goal **2%** (‖ẑ_end−z\*‖ 8.23 vs start 2.61) → **Outcome B, model fidelity.** Do not build C1. Writeup: [`13_phase_c0_report.md`](13_phase_c0_report.md).
-- **Next:** C-alt **CA0** — closed-loop imagine vs `m` ([`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md)). Not Sep, not a new cost head, not a retrain until CA0 reports.
+- **C-alt CA0–CA3 (run, seed 0):** **CA0-INFIDELITY** (`m=1` toward 84% / d_end 1.43; `m=25` matches C0 8.23 / 2%). CA1 contact/free drift ratio ~1.2, not a contact spike. CA2 rank 22.5/192, 58% dead dims. CA3 `block_x` ε-sweep linear in free and contact. C1 stays gated; CA-train motivated, not started. Compact: [`experiment_log.md`](experiment_log.md).
+- **Next:** viz toolkit **v3** ([`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md)) then CA-train only when explicitly specced. Not Sep, not a new cost head, not C1.
 - **Env:** PushT is the claim env; Reacher is diagnostic only (dropped from the PushT legibility claim).

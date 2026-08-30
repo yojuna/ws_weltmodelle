@@ -183,7 +183,7 @@ The actor C1 builds is the substrate the eventual **open-ended self-play / onlin
 
 ## 13. Immediate next actions
 
-**Done (2026-08-30).** C0 ran; C0.3-as-run was underpowered; C0.3-redo → Outcome B. Commands below are the C0 reproduction recipe, not current next work. Current next step: CA0 in [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). D7 stays proposed (not ratified into `00` from this file).
+**Done (2026-08-30).** C0 ran; C0.3-as-run was underpowered; C0.3-redo → Outcome B. Commands below are the C0 reproduction recipe, not current next work. CA0 later reported INFIDELITY ([`experiment_log.md`](experiment_log.md)). D7 stays proposed (not ratified into `00` from this file).
 
 ```bash
 # C0.2 — diverse-action bank + liveness (NEW collector flag, not kinematic)

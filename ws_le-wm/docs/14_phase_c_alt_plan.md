@@ -4,8 +4,9 @@
 **Spec lineage:** resolves the redirect recorded in [`13_phase_c0_report.md`](13_phase_c0_report.md) (Outcome B, model fidelity) and [`12a_c03_redo.md`](12a_c03_redo.md).
 **Inherits:** posture + stability rules in `00_decisions.md`; diagnostics in `09`–`13`.
 **Stack:** `le-wm/` on stable-worldmodel; live eval; reuse existing dumps (`phase_b_dump/`, `c0_oracle_livebank/`).
-**Change control:** D6 keep is recorded in `00` (not a flip). D7 (asymmetry) stays proposed. Nothing gets built past a gate until the gate reports. This plan does **not** start CA0 code.
-**Visual artifacts:** several checks below emit figures specified in [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md). The scalar is the citable result; the figure motivates the next scalar.
+**Change control:** D6 keep is recorded in `00` (not a flip). D7 (asymmetry) stays proposed. Nothing gets built past a gate until the gate reports.
+**Status (2026-08-30):** CA0/CA1/CA2/CA3 ran (seed 0). Fork **CA0-INFIDELITY** (`m=1` teacher-force guard). C1 remains gated. CA-train is motivated by this fork and **not started**. Viz v0 toolkit is in the tree. Numbers: [`experiment_log.md`](experiment_log.md).
+**Visual artifacts:** v0 toolkit implemented per [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). Upgrade spec: [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md) (v3). The scalar is the citable result; the figure motivates the next scalar.
 
 ---
 
@@ -132,9 +133,9 @@ This sharpens *which* fix, and it feeds the writeup's mechanism section either w
 
 | ID | State | C-alt status | Trigger |
 |---|---|---|---|
-| **CA0 fork** | Open | **Run first.** | ACCUMULATION → protocol fix + re-open C1. INFIDELITY → CA-train. |
-| **C1 actor** | Gated off (C0 Outcome B) | **Conditionally re-opened** by CA0-ACCUMULATION (closed-loop scorer). | CA0-ACCUMULATION recorded. |
-| **CA-train (retrain)** | Not started | **Gated on CA0-INFIDELITY.** | CA0 reports per-step infidelity. |
+| **CA0 fork** | **CA0-INFIDELITY** (seed 0) | Recorded. `m=1` failed the teacher-force guard. | ACCUMULATION → protocol fix + re-open C1. INFIDELITY → CA-train. |
+| **C1 actor** | Gated off (C0 Outcome B; CA0 did not un-gate) | Stays off. | CA0-ACCUMULATION recorded. |
+| **CA-train (retrain)** | Not started | **Motivated** by CA0-INFIDELITY. Do not start from this file until explicitly specced. | CA0 reports per-step infidelity. |
 | **D6** | Keep/extract | **Unchanged.** | n/a in this plan. |
 | **Scaling (token/model)** | Off | **Stays off.** | CA2 shows rank→dim on a harder task (future). |
 | **Sep / new cost head** | Off | **Stays off.** | Not on any C-alt path. |

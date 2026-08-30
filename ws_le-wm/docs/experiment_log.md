@@ -180,3 +180,33 @@ Bank: `eval_results/pusht/c0_oracle_livebank/seed0/` — GoalPush then Weak, `(t
 
 **Next (not started):** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) — CA0 closed-loop imagine discriminator first. D6 keep recorded in `00`. D7 stays proposed.
 
+---
+
+## 2026-08-30 — CA0 closed-loop imagine (seed 0)
+
+**Spec:** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) CA0. Trajectories: `eval_results/pusht/ca0_closed_loop/seed0/ca0.npz`. Fork is `summary.json`, not a figure. **C1 / CA-train not started.**
+
+Same live-bank as C0 (`c0_oracle_livebank/seed0/`, n=50). Re-encode every `m ∈ {1,3,5,12,25}`. `m=25` matches C0 open-loop: mean ‖ẑ_end−z*‖ **8.228**, toward-goal **2%**, d_start **2.611**.
+
+| m | mean ‖ẑ_end−z*‖ | toward-goal |
+|---|-----------------|-------------|
+| 1 | 1.426 | 84% |
+| 3 | 2.017 | 66% |
+| 5 | 2.351 | 62% |
+| 12 | 5.037 | 8% |
+| 25 | 8.228 | 2% |
+
+Pre-registered fork: **CA0-INFIDELITY**. `m=1` fails the teacher-force guard (toward 0.84 < 0.90 or d_end 1.43 > 1.0). `m=5` would have met ACCUMULATION cuts (toward ≥ 0.60 and d_end ≤ 3) if that guard had passed — do not retune after seeing the curve.
+
+Viz toolkit v0 (spec [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md)) landed after this dump: Figs 1–7 + `eval_results/pusht/viz_report/index.html`.
+
+**CA1** contact/free mean drift (predicted frames only): kinematic dump ratio **1.18** (11.50 vs 9.78); diverse dump **0.83**; CA0 `m=25` vs true z **1.33** (6.64 vs 4.98). Not a contact-only spike. Live-bank wall band exists (wall 7.29 vs free 4.98); kinematic dump never hits the wall mask.
+
+**CA2** (Fig-7 on kinematic dump): participation ratio **22.5** / 192-d; 90% variance at k=29; dead-dim fraction **0.58**. Hard elbow + dead tail — do not scale the token.
+
+**CA3** (`block_x` ε-sweep, one P step): slope **0.255** free / **0.252** contact, linearity R² >0.999 both. Geometry is linearly steerable; does not rescue the CA0 rollout fault.
+
+CEM capture (ep 0 first replan): selected cost **5.69**, oracle packed cost **21.8**, regret **+16** (oracle expensive in imagination → model-side, consistent with Outcome B).
+
+**Do not start C1 or CA-train from this result.** Pictures are not a gate. Viz upgrade target: [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md).
+

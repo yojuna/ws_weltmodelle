@@ -105,7 +105,7 @@ Seed-0 kinematic tokens, v2 `reach.pt`. Participation ratio of covariance eigenv
 | Item | Result |
 |--|--|
 | D6 | **Keep / extract** (C0.1 replicate) |
-| C-alt | **Redirect** (C0.3-redo Outcome B). Plan: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) (rollout fidelity / CA0 — not AdaLN). Not built this session. |
+| C-alt | **Redirect** (C0.3-redo Outcome B). Plan: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) (rollout fidelity / CA0 — not AdaLN). Not built in the C0 session; CA0 later reported INFIDELITY. |
 | C1 actor | **Do not start** (Outcome B: `P` cannot imagine oracle reaching; C0.3-as-run was also underpowered). |
 | D7 asymmetry | Proposed only; not written into `00` |
 | Hierarchy / C2 | Still composition-only, untriggered |

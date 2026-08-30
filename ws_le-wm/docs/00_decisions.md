@@ -66,4 +66,4 @@ When flipping a deferred item on:
 2. Update `01_design_spec.md` and `02_implementation_plan.md`.
 3. Keep v1 claim falsifiable; do not silently change the bet.
 
-**2026-08-30 (not a flip):** D6 stay-as-keep recorded after B1 + C0.1. C0.3-redo resolved to Outcome B (model fidelity) → planning follows [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). D7 (asymmetry) stays proposed, not locked here. C1 actor is gated off until CA0 says otherwise.
+**2026-08-30 (not a flip):** D6 stay-as-keep recorded after B1 + C0.1. C0.3-redo resolved to Outcome B (model fidelity) → planning follows [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). D7 (asymmetry) stays proposed, not locked here. CA0 reported **INFIDELITY** (`m=1` guard); C1 remains gated. CA-train is motivated by that fork and is **not** started from this file.

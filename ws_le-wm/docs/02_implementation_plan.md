@@ -3,7 +3,7 @@
 **Depends on:** `00_decisions.md`, `01_design_spec.md`  
 **Stack:** `le-wm/` + stable-worldmodel planning + existing PushT eval logging
 
-**Status (2026-08-30):** Phases 0–4 of this document are **done** (Phase A campaigns). The v1 “go / pivot” is recorded in `07` / `08`: short-horizon φ > L2 is supported; offset / φ-alone is not. Phase B diagnostics are in [`11_phase_b_report.md`](11_phase_b_report.md); C0 gate in [`13_phase_c0_report.md`](13_phase_c0_report.md). Remaining engineering follows [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) (CA0 first). What is in the tree: [`10_implementation_status.md`](10_implementation_status.md). Do not start another cost-head phase from this file. Do not start C1.
+**Status (2026-08-30):** Phases 0–4 of this document are **done** (Phase A campaigns). The v1 “go / pivot” is recorded in `07` / `08`: short-horizon φ > L2 is supported; offset / φ-alone is not. Phase B diagnostics are in [`11_phase_b_report.md`](11_phase_b_report.md); C0 gate in [`13_phase_c0_report.md`](13_phase_c0_report.md). C-alt CA0 reported **INFIDELITY**; remaining engineering follows [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) (CA-train motivated, not started). What is in the tree: [`10_implementation_status.md`](10_implementation_status.md). Do not start another cost-head phase from this file. Do not start C1.
 
 ---
 

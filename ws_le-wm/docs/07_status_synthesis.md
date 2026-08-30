@@ -4,7 +4,7 @@
 **Chronicle:** [`experiment_log.md`](experiment_log.md) · protocols `03`–`06`.  
 **Full writeup:** [`08_phase_a_report.md`](08_phase_a_report.md) (design + every campaign in one narrative).  
 **Phase B:** [`09_phase_b_plan.md`](09_phase_b_plan.md) / [`11_phase_b_report.md`](11_phase_b_report.md) — diagnose geometry vs predictor-horizon vs representation; do not iterate cost heads.  
-**Current planning (2026-08-30):** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) — C0 Outcome B (model fidelity); CA0 first. This file remains the Phase A evidence ledger.
+**Current planning (2026-08-30):** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) — C0 Outcome B (model fidelity); CA0 reported INFIDELITY; CA-train not started. This file remains the Phase A evidence ledger.
 
 ---
 
@@ -91,7 +91,7 @@ H1 fix (train on ẑ) **failed** planning gate despite better corr → seeing �
 
 ## Decision fork (superseded for planning)
 
-The A vs B fork below is **historical**. Phase B planning was [`09_phase_b_plan.md`](09_phase_b_plan.md). After C0 Outcome B, planning follows [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md): stop cost-head churn; localize rollout fidelity (CA0) before actor or retrain.
+The A vs B fork below is **historical**. Phase B planning was [`09_phase_b_plan.md`](09_phase_b_plan.md). After C0 Outcome B, planning follows [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md): stop cost-head churn; localize rollout fidelity (CA0 reported INFIDELITY) before actor or retrain.
 
 ### A. Close the thin-`φ` cost loop — **demoted to optional bookkeeping**
 

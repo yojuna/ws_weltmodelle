@@ -2,11 +2,11 @@
 
 **Date:** 2026-08-30  
 **Repo:** `ws_weltmodelle` `feat/lewm-phi` · submodule `ws_le-wm/le-wm` same branch  
-**Normative plan:** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) (CA0 first)  
+**Normative plan:** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) (CA0 reported INFIDELITY; CA-train not started)  
 **Runtime:** [`../../docs/docker_usage.md`](../../docs/docker_usage.md)  
 **Numbers:** [`11_phase_b_report.md`](11_phase_b_report.md) (Phase B) · [`13_phase_c0_report.md`](13_phase_c0_report.md) (C0) · [`experiment_log.md`](experiment_log.md) (compact). D6 **keep**; [`00_decisions.md`](00_decisions.md) records that keep (not a flip).
 
-This file records **what is in the tree**. C-alt (CA0 and later) is **not** started. Do not start C1.
+This file records **what is in the tree**. C-alt dumps (CA0/CA1) and the dump-driven viz toolkit are in; **CA-train and C1 are not**. Do not start C1.
 
 ---
 
@@ -69,6 +69,20 @@ CLI: `latent_dump.py --action-mode diverse` / `--collector`; `pack_action_token`
 
 ---
 
-## 5. Phase C-alt — not started
+## 5. Phase C-alt dumps + viz toolkit (2026-08-30)
 
-Spec: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). Viz: [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md). Next experiment is **CA0** (`scripts/closed_loop_imagine.py` — not in the tree yet). Do not implement CA-train, C1, or the viz module from this file.
+Spec: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). Viz **v0** (what landed): [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). Viz **v3** (upgrade, not built): [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md). **CA0 fork is JSON, not a figure.** Do not start CA-train or C1.
+
+| Surface | Path |
+|---------|------|
+| Closed-loop imagine | `le-wm/phase_b.py` `imagine_closed_loop`; `scripts/closed_loop_imagine.py` |
+| Contact heuristic | `phase_b.contact_events` (PushT radius 45 / wall 40); Reacher stub |
+| CA1 scalars | `scripts/drift_by_event.py` |
+| Viz core + Figs 1–7 | `le-wm/viz.py`, `scripts/viz.py`, `scripts/test_viz.py` |
+| CEM landscape capture | `eval_live.py --capture-cem`; `eval_logging/cem_capture.py` |
+| CA3 sweep | `scripts/intervene_sweep.py` |
+| Static report | `scripts/viz_report.py` → `eval_results/pusht/viz_report/` |
+
+**CA0 (seed 0, live-bank n=50):** `m=25` matches C0 (‖ẑ_end−z*‖ 8.228, toward 2%). Fork **CA0-INFIDELITY** (`m=1` teacher-force guard). Numbers: [`experiment_log.md`](experiment_log.md).
+
+Viz: Fig-1 `oracle_overlay`, Fig-2 `cem_landscape`, Fig-3 `drift_contacts`, Fig-4 `rollout_filmstrip`, Fig-5 `probe_faithfulness`, Fig-6 `intervention_sweep`, Fig-7 `rank_spectrum`.

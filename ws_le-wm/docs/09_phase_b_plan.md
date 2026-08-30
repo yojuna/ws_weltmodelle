@@ -211,7 +211,7 @@ Unchanged in spirit: representation-first bet; Phase C open-endedness / online l
 
 **Done (2026-08-29).** GPU dumps, probes (`--intervene-live`), drift@h=5, and the CEM `T` sweep were run. Record: [`11_phase_b_report.md`](11_phase_b_report.md), [`experiment_log.md`](experiment_log.md). D6 **keep**; hierarchy not fired as a `T`-shortening patch.
 
-B4 (build the B3 row) was **not** started. C0 then redirected to C-alt ([`13_phase_c0_report.md`](13_phase_c0_report.md)). **Do not run the commands below as “next work”** — they are the Phase B reproduction recipe. Current next step: CA0 in [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md).
+B4 (build the B3 row) was **not** started. C0 then redirected to C-alt ([`13_phase_c0_report.md`](13_phase_c0_report.md)). **Do not run the commands below as “next work”** — they are the Phase B reproduction recipe. CA0 later reported INFIDELITY ([`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md)).
 
 ```bash
 # dumps
