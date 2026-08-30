@@ -67,3 +67,5 @@ When flipping a deferred item on:
 3. Keep v1 claim falsifiable; do not silently change the bet.
 
 **2026-08-30 (not a flip):** D6 stay-as-keep recorded after B1 + C0.1. C0.3-redo resolved to Outcome B (model fidelity) → planning follows [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). D7 (asymmetry) stays proposed, not locked here. CA0 reported **INFIDELITY** (`m=1` guard); C1 remains gated. CA-train is motivated by that fork and is **not** started from this file.
+
+**2026-08-31 (not a flip):** Part A re-derived the fork on median one-step `frac` (not 1.43 vs 1.0). A-confirm **CONFIRMED_INFIDELITY**. B.eval **BLOCK_INFIDELITY** (block-moving bank `frac` 0.887, small-step tercile 1.70). Mechanism: wrong-direction map on pusher **and** block. C1 stays gated. Part B remains **not started**; fidelity-fixed still requires both banks plus the small-step tercile ([`16`](16_fidelity_retrain_plan.md) B.4).

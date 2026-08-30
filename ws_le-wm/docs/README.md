@@ -7,9 +7,11 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 | Doc | Purpose |
 |-----|---------|
 | [00_decisions.md](00_decisions.md) | Locked design decisions (source of truth for scope) |
-| [14_phase_c_alt_plan.md](14_phase_c_alt_plan.md) | **Current plan:** localize rollout fidelity; CA0 reported INFIDELITY; CA-train not started |
-| [15_viz_toolkit_spec.md](15_viz_toolkit_spec.md) | Viz toolkit **v3** (upgrade spec: tiers + scientific report) |
-| [15_viz_toolkit_spec_v0.md](15_viz_toolkit_spec_v0.md) | Viz toolkit **v0** (implemented: `le-wm/viz.py` Figs 1–7) |
+| [14_phase_c_alt_plan.md](14_phase_c_alt_plan.md) | C-alt localize-fidelity plan; CA0 INFIDELITY re-derived; CA-train not started |
+| [16_fidelity_retrain_plan.md](16_fidelity_retrain_plan.md) | Encoder-floor gate then (conditional) multi-step retrain; B.eval **BLOCK_INFIDELITY**; Part B not started |
+| [16a_infidelity_investigation.md](16a_infidelity_investigation.md) | Part A + A-confirm + B.eval findings: **CONFIRMED_INFIDELITY**, then **BLOCK_INFIDELITY** |
+| [15_viz_toolkit_spec.md](15_viz_toolkit_spec.md) | Viz toolkit **v3** (implemented: tiers + diagnostic report) |
+| [15_viz_toolkit_spec_v0.md](15_viz_toolkit_spec_v0.md) | Viz toolkit **v0** (gallery; superseded as the writeup) |
 | [13_phase_c0_report.md](13_phase_c0_report.md) | Phase C0 confirmation gate (liveness, oracle, seeds, rank) |
 | [12a_c03_redo.md](12a_c03_redo.md) | C0.3-redo: live-bank oracle, two-outcome gate |
 | [12_phase_c_plan.md](12_phase_c_plan.md) | Phase C spec: C0 gate then actor / C-alt (C1 gated off) |
@@ -54,13 +56,15 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 - C-alt dumps / viz: `scripts/closed_loop_imagine.py`, `drift_by_event.py`, `le-wm/viz.py`, `scripts/viz.py`, `scripts/viz_report.py`
 - PushT eval config: `le-wm/config/eval/pusht.yaml`
 
-## Status (2026-08-30)
+## Status (2026-08-31)
 
 - **Short-horizon:** Euclidean `φ` (v2) **beats L2** multi-seed (36.7 vs 16.7); matched random `φ` is **25.0** — phenomenon replicated, only partly learned reachability.
 - **Offset / firm gate:** no thin cost head reliably wins; absolute success ~2–10%. Phase B `T` sweep still **4–6%** L2 for T=2,3,5,8.
 - **Tried & failed gates:** IQL-on-`φ` (T3); imagined-future `φ` (H1).
 - **Phase B B1/B2 (run):** PushT linear state R² ~0.70, live `block_x` intervention hit-rate 1.0 → **D6 keep**. Offset L2 stays **4–6%** for T=2,3,5,8. Writeup: [`11_phase_b_report.md`](11_phase_b_report.md).
 - **Phase C0 (run):** `P` is action-live on diverse actions (shuffle−true gap 1.77). Live-bank oracle: replay **94%**, CEM-L2 **50%**, imagine toward-goal **2%** (‖ẑ_end−z\*‖ 8.23 vs start 2.61) → **Outcome B, model fidelity.** Do not build C1. Writeup: [`13_phase_c0_report.md`](13_phase_c0_report.md).
-- **C-alt CA0–CA3 (run, seed 0):** **CA0-INFIDELITY** (`m=1` toward 84% / d_end 1.43; `m=25` matches C0 8.23 / 2%). CA1 contact/free drift ratio ~1.2, not a contact spike. CA2 rank 22.5/192, 58% dead dims. CA3 `block_x` ε-sweep linear in free and contact. C1 stays gated; CA-train motivated, not started. Compact: [`experiment_log.md`](experiment_log.md).
-- **Next:** viz toolkit **v3** ([`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md)) then CA-train only when explicitly specced. Not Sep, not a new cost head, not C1.
+- **C-alt CA0–CA3 (run, seed 0):** **CA0-INFIDELITY** (`m=1` toward 84% / d_end 1.43; `m=25` matches C0 8.23 / 2%). That 1.43 is distance-to-goal, not the one-step residual. CA1–CA3 unchanged. Compact: [`experiment_log.md`](experiment_log.md).
+- **Part A + A-confirm (2026-08-31):** fork re-derived on median one-step `frac`. Live-bank seeds 0–2 **0.99 / 1.09 / 0.99**; random-action **1.40** → **CONFIRMED_INFIDELITY**. Wrong-direction map (~41–46°), not frozen/deaf. Writeup: [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md).
+- **B.eval-block / B.eval-tercile (2026-08-31):** block-moving bank n=50, `frac` **0.887**, small-step tercile **1.70**, angle ~51° → **BLOCK_INFIDELITY**. Claim is pusher **and** block. Plan: [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md). **Part B / C1 not started.**
+- **Next:** CA-train / Part B only when explicitly launched. Not Sep, not a new cost head, not C1. Viz v3 is in the tree ([`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md)).
 - **Env:** PushT is the claim env; Reacher is diagnostic only (dropped from the PushT legibility claim).

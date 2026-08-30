@@ -198,7 +198,7 @@ Same live-bank as C0 (`c0_oracle_livebank/seed0/`, n=50). Re-encode every `m ∈
 
 Pre-registered fork: **CA0-INFIDELITY**. `m=1` fails the teacher-force guard (toward 0.84 < 0.90 or d_end 1.43 > 1.0). `m=5` would have met ACCUMULATION cuts (toward ≥ 0.60 and d_end ≤ 3) if that guard had passed — do not retune after seeing the curve.
 
-Viz toolkit v0 (spec [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md)) landed after this dump: Figs 1–7 + `eval_results/pusht/viz_report/index.html`.
+Viz toolkit v0 (spec [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md)) landed after this dump: Figs 1–7 + gallery `index.html`.
 
 **CA1** contact/free mean drift (predicted frames only): kinematic dump ratio **1.18** (11.50 vs 9.78); diverse dump **0.83**; CA0 `m=25` vs true z **1.33** (6.64 vs 4.98). Not a contact-only spike. Live-bank wall band exists (wall 7.29 vs free 4.98); kinematic dump never hits the wall mask.
 
@@ -208,5 +208,78 @@ Viz toolkit v0 (spec [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md)) l
 
 CEM capture (ep 0 first replan): selected cost **5.69**, oracle packed cost **21.8**, regret **+16** (oracle expensive in imagination → model-side, consistent with Outcome B).
 
-**Do not start C1 or CA-train from this result.** Pictures are not a gate. Viz upgrade target: [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md).
+**Do not start C1 or CA-train from this result.** Pictures are not a gate.
+
+Viz toolkit **v3** report corrected: BLUF uses bank-mean end-dist **8.23** (pair 0=18.8 is labeled example); A5 citable scalar is full-space bank angle **42.5°**; A3 pose-probe energy ~1% on the live-bank; B2 labeled wrong-objective (more CEM iterations would recede from the oracle); same-state re-encode floor **0**. Artifact: `eval_results/pusht/viz_report/seed0/diagnostic_report.html`.
+
+---
+
+## 2026-08-31 — Part A encoder-floor bracket (seed 0)
+
+**Spec:** [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md) Part A only. Cuts frozen in `le-wm/thresholds.yaml` (`frac ≤ 0.25` ACCUMULATION, `≥ 0.5` INFIDELITY) **before** the GPU run. **Part B / CA-train / C1 not started.**
+
+Bank: CA0 dump `ca0_closed_loop/seed0` + live-bank `c0_oracle_livebank/seed0` (n=50). Not kinematic `phase_b_dump`. Artifact: `eval_results/pusht/encoder_floor/seed0/encoder_floor.json` (copied next to CA0 for viz).
+
+### A-calibrate — pass
+
+| Check | Result |
+|-------|--------|
+| Same-state re-encode (32 frames, two forwards + batch-position) | **0.0** |
+| Dump z vs fresh encode | rel **0.0** |
+| Dump `d_end` m=1 vs `summary.json` | **1.426** matches |
+| Fresh `P` m=1 vs dump ẑ | rel **0.0** (50 pairs) |
+| Units | raw `encode()['emb'][:,0]`, L2, no SIGReg |
+
+On this bank, **goal pixels are the last path frame**: mean ‖z_true[-1] − z*‖ = **0**. So CA0's 1.43 is mean last-frame ‖ẑ_end − z_true[-1]‖ (last-step one-step, mean). `frac` still uses the **bank-median over all t ≥ 3**, not that last-frame mean.
+
+### A-decide — INFIDELITY (do not retune cuts)
+
+| Quantity | Value | Role |
+|----------|-------|------|
+| Perfect floor | 0.0 | lower bound |
+| One-step median (bracket) | **1.205** | number under test |
+| Adjacent true-z median (null) | **1.225** | identity predictor |
+| Random-pair spread median | 18.74 | latent scale |
+| Fork mean `d_end` m=1 | 1.426 | CA0's 1.43; not used in `frac` |
+| **frac** (medians) | **0.983** | frozen cut ≥ 0.5 → INFIDELITY |
+
+Per-step `frac` median 1.02 (p10 0.51, p90 2.66): on a typical step, `P` is as bad as “predict no movement,” sometimes worse. Descriptive compounding (not a gate): one-step/adjacent ≈ 0.98; naive T=5 linear ≈ 4.9, sqrt ≈ 2.2.
+
+**Guard:** `INFIDELITY`. `gate_part_b` is true on the spec. **This log does not start Part B.** Next is a scoped B plan (matched 1-step baseline + multi-step), not C1.
+
+---
+
+## 2026-08-31 — A-confirm (thorough, pre-retrain)
+
+**Spec:** [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md) A-confirm. Cuts frozen in `thresholds.yaml` `infidelity_confirm` before the run. Artifact: `eval_results/pusht/infidelity_confirm/summary.json`. **Part B / C1 not started.**
+
+**Overall: CONFIRMED_INFIDELITY.** No seed fluke, not encoder jitter, not bank-specific. Writeup: [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md).
+
+| Arm | frac | guard |
+|-----|------|-------|
+| Live-bank seed 0 | **0.988** | INFIDELITY |
+| Live-bank seed 1 | **1.092** | INFIDELITY |
+| Live-bank seed 2 | **0.990** | INFIDELITY |
+| Random-action (80 segs, 1840 steps) | **1.404** | INFIDELITY |
+
+Mechanism (not new gates): P **does move** (predicted-move / adjacent **1.40**) and **hears actions** (shuffle gap / adjacent **0.58**; zero-action gap **0.22**). Pose Spearman **0.67** (tracks agent xy; block xy step median is **0** on these short windows). Direction is still wrong (~46°). Free and contact both infidelity. Large-step tercile still **0.66** (≥ 0.5). Random-action is *worse* than identity (frac 1.40).
+
+**Before B (folded into [`16`](16_fidelity_retrain_plan.md) B.4, not launched):** (1) a **block-moving** eval bank so “fidelity fixed” is not certified on pusher-only hops; (2) **small-step tercile** as a named success criterion (pre: 2.17 / 0.96 / 0.66) so an average-only `frac` drop cannot hide the regime that accumulates.
+
+---
+
+## 2026-08-31 — B.eval-block + B.eval-tercile (pre-retrain, no Part B)
+
+**Spec:** [`16`](16_fidelity_retrain_plan.md) B.eval-block / B.eval-tercile. Cuts frozen in `thresholds.yaml` (`median_step_block_xy_min: 2.0`; live-bank Δz edges `0.83155` / `1.74008`) *before* collection. Artifact: `eval_results/pusht/block_motion_eval/seed0/summary.json`. **Part B / C1 not started.**
+
+**Overall: BLOCK_INFIDELITY.** GoalPush 80 eps yielded 237 qualifying windows; took 50. Mean per-pair block-step median **7.34 px** (cut 2.0). Bank-median `frac` **0.887** (≥ 0.5). Small-step tercile **1.70** (worse than bank median; frozen edges, not re-fit). Angle ~51°. Block xy step median **5.26** (live-bank was 0). Spearman vs block **0.43** (live-bank 0.10). Predicted-move / adjacent **1.04** (not frozen).
+
+Live-bank dump-only slice (same frozen edges): parked-step `frac` 1.03 (n=1046) vs moving-step `frac` 0.75 (n=104, still infidelity, underpowered).
+
+| Bank | frac | small / mid / large | block-xy step median | angle |
+|------|------|---------------------|----------------------|-------|
+| Live-bank seed 0 | 0.99 | 2.17 / 0.96 / 0.66 | **0** | ~46° |
+| Block-moving n=50 | **0.89** | **1.70** / 1.09 / 0.72 | **5.26** | ~51° |
+
+Claim strengthens to pusher **and** block. Small-step tercile remains the named B target. Do not retune 2.0 or the tercile edges.
 

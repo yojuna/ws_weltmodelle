@@ -5,8 +5,8 @@
 **Inherits:** posture + stability rules in `00_decisions.md`; diagnostics in `09`–`13`.
 **Stack:** `le-wm/` on stable-worldmodel; live eval; reuse existing dumps (`phase_b_dump/`, `c0_oracle_livebank/`).
 **Change control:** D6 keep is recorded in `00` (not a flip). D7 (asymmetry) stays proposed. Nothing gets built past a gate until the gate reports.
-**Status (2026-08-30):** CA0/CA1/CA2/CA3 ran (seed 0). Fork **CA0-INFIDELITY** (`m=1` teacher-force guard). C1 remains gated. CA-train is motivated by this fork and **not started**. Viz v0 toolkit is in the tree. Numbers: [`experiment_log.md`](experiment_log.md).
-**Visual artifacts:** v0 toolkit implemented per [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). Upgrade spec: [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md) (v3). The scalar is the citable result; the figure motivates the next scalar.
+**Status (2026-08-31):** CA0/CA1/CA2/CA3 ran (seed 0). Fork **CA0-INFIDELITY** was re-derived on median one-step `frac` → **CONFIRMED_INFIDELITY**, then **BLOCK_INFIDELITY** on a block-moving bank (`frac` 0.887, small-step tercile 1.70). C1 remains gated. CA-train / Part B is motivated and **not started**. Spec and as-run: [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md), [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md). Numbers: [`experiment_log.md`](experiment_log.md).
+**Visual artifacts:** v3 implemented per [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md) (`diagnostic_report.html`). v0 gallery record: [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). The scalar is the citable result; the figure motivates the next scalar.
 
 ---
 

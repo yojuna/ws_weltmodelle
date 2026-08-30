@@ -71,18 +71,32 @@ CLI: `latent_dump.py --action-mode diverse` / `--collector`; `pack_action_token`
 
 ## 5. Phase C-alt dumps + viz toolkit (2026-08-30)
 
-Spec: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). Viz **v0** (what landed): [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). Viz **v3** (upgrade, not built): [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md). **CA0 fork is JSON, not a figure.** Do not start CA-train or C1.
+Spec: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). Viz **v3** (what landed): [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md). Viz **v0** (gallery, superseded as the writeup): [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). **CA0 fork is JSON, not a figure.** Do not start CA-train or C1.
 
 | Surface | Path |
 |---------|------|
-| Closed-loop imagine | `le-wm/phase_b.py` `imagine_closed_loop`; `scripts/closed_loop_imagine.py` |
+| Closed-loop imagine | `le-wm/phase_b.py` `imagine_closed_loop`; `scripts/closed_loop_imagine.py` (reads `thresholds.yaml`) |
 | Contact heuristic | `phase_b.contact_events` (PushT radius 45 / wall 40); Reacher stub |
 | CA1 scalars | `scripts/drift_by_event.py` |
-| Viz core + Figs 1–7 | `le-wm/viz.py`, `scripts/viz.py`, `scripts/test_viz.py` |
-| CEM landscape capture | `eval_live.py --capture-cem`; `eval_logging/cem_capture.py` |
+| Viz core | `le-wm/viz.py` (`FigureResult`), `scripts/viz.py`, `scripts/test_viz.py` |
+| Thresholds | `le-wm/thresholds.yaml` (CA0 / encoder-floor / B.eval cuts; do not retune) |
+| CEM capture | `eval_live.py --capture-cem`; `eval_logging/cem_capture.py` (line-search + per-iter elites) |
 | CA3 sweep | `scripts/intervene_sweep.py` |
-| Static report | `scripts/viz_report.py` → `eval_results/pusht/viz_report/` |
+| Diagnostic report | `scripts/report.py` → `eval_results/pusht/viz_report/seed0/diagnostic_report.html` (`viz_report.py` is a shim) |
 
-**CA0 (seed 0, live-bank n=50):** `m=25` matches C0 (‖ẑ_end−z*‖ 8.228, toward 2%). Fork **CA0-INFIDELITY** (`m=1` teacher-force guard). Numbers: [`experiment_log.md`](experiment_log.md).
+**CA0 (seed 0, live-bank n=50):** `m=25` matches C0 (‖ẑ_end−z*‖ 8.228, toward 2%). Fork **CA0-INFIDELITY** (`m=1` teacher-force guard). Re-derived 2026-08-31 on median one-step `frac` → **CONFIRMED_INFIDELITY**, then **BLOCK_INFIDELITY**. Numbers: [`experiment_log.md`](experiment_log.md). Spec: [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md).
 
-Viz: Fig-1 `oracle_overlay`, Fig-2 `cem_landscape`, Fig-3 `drift_contacts`, Fig-4 `rollout_filmstrip`, Fig-5 `probe_faithfulness`, Fig-6 `intervention_sweep`, Fig-7 `rank_spectrum`.
+**Viz v3:** A1/A2/B1 + report landed. Pairings in A1 (overlay + full-space curve + in-plane fraction), A3 (`probe_decompose`), D1 (TwoNN). B1 is cost-vs-dist + selected→oracle line-search + candidate PCA (no height map). B4 and C1-by-hardness deferred.
+
+## 6. Encoder-floor / B.eval (2026-08-31)
+
+Cuts frozen in `le-wm/thresholds.yaml` (`encoder_floor`, `infidelity_confirm`, `b_eval_block`, `b_eval_tercile`). Do not retune. **Part B not started.**
+
+| Surface | Path |
+|---------|------|
+| Encoder floor | `scripts/encoder_floor.py`, `scripts/test_encoder_floor.py` |
+| A-confirm | `scripts/infidelity_confirm.py`, `scripts/test_infidelity_confirm.py` |
+| Block-moving pairs | `eval_logging/oracle_bank.py` `window_block_moving_pairs` |
+| B.eval-block / tercile | `scripts/block_motion_eval.py` |
+
+Artifacts (gitignored dumps): `eval_results/pusht/encoder_floor/seed0/`, `infidelity_confirm/`, `block_motion_eval/seed0/`.

@@ -1,7 +1,7 @@
 # Visualization Toolkit Spec (v3) — `viz.py` + scientific report: prioritized, dump-driven, projection-honest
 
 **Date:** 2026-08-30 (v3 adds explicit priority tiers + the report design)
-**Status:** upgrade spec. The v0 toolkit (`le-wm/viz.py`, Figs 1–7, gallery-style `viz_report.py`) is in the tree and followed [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). Do not treat those figures as satisfying this document.
+**Status:** implemented in `le-wm/viz.py` + `scripts/report.py`. The v0 gallery (`15_viz_toolkit_spec_v0.md`) remains the record of the first toolkit; do not treat those figures as satisfying this document.
 **Purpose:** a reusable visual layer for understanding the world model, rollout, cost, planner, and task — attaching to dumps we already produce, with rigor rules that stop the tooling from hiding the effects we hunt, and an **explicit priority tier** on every figure so we build the decisive ones and treat the rest as rounding.
 **Consumes:** `phase_b_dump/seed{N}/dump.npz`, `c0_oracle_livebank/seed{N}/`, `ca0_closed_loop/`, and a new `cem_capture.npz`.
 **Feeds:** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). Every figure names the **scalar it motivates**.
