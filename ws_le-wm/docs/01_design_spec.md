@@ -1,6 +1,6 @@
 # Technical Design Spec — JEPA + Thin Reachability `φ` (v1)
 
-**Status:** Draft locked to decisions in `00_decisions.md`  
+**Status:** v1 design locked to `00_decisions.md`. Success criteria in §11 are the original Phase A gate; they are **superseded for planning** by [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). Do not treat E2 ≯ E1 as a cue to iterate the cost head.  
 **Env:** PushT (`swm/PushT-v1`)  
 **Codebase:** `le-wm/` on stable-worldmodel + stable-pretraining
 

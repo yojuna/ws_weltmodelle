@@ -24,4 +24,6 @@ git submodule update --init --recursive
 
 Work on LeWM code inside `ws_le-wm/le-wm` on branch `feat/lewm-phi`.
 
+Research docs: [`ws_le-wm/docs/README.md`](ws_le-wm/docs/README.md). Current plan: [`ws_le-wm/docs/14_phase_c_alt_plan.md`](ws_le-wm/docs/14_phase_c_alt_plan.md) (CA0). Locked decisions: [`ws_le-wm/docs/00_decisions.md`](ws_le-wm/docs/00_decisions.md).
+
 GPU work: see [`docs/docker_usage.md`](docs/docker_usage.md). Short version: `cd docker && ./run.sh up --build` once, then `./run.sh`. The container does not auto-start on reboot; `run.sh` starts it and stops it when the session ends. Do not recreate `ws_le-wm/le-wm/.venv` on the host.

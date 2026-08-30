@@ -6,7 +6,8 @@
 **Stack:** `le-wm/` on stable-worldmodel + stable-pretraining; **live eval** for PushT and Reacher (no author HDF5 for evaluation).  
 **Change control:** unchanged from `00_decisions.md` — deferred items flip only on *observed* failure, recorded with date + reason. This document flips nothing silently.
 
-**Code:** `le-wm/scripts/latent_dump.py`, `latent_probe.py`, `predictor_drift.py`, `run_horizon_sweep.sh`; `eval_live.py --horizon`.
+**Code:** `le-wm/scripts/latent_dump.py`, `latent_probe.py`, `predictor_drift.py`, `run_horizon_sweep.sh`; `eval_live.py --horizon`.  
+**Results (2026-08-29):** [`11_phase_b_report.md`](11_phase_b_report.md). B1/B2 GPU runs are **done**; D6 **keep**. This file is the Phase B spec, not the current next-step plan — that is [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) after C0 Outcome B ([`13_phase_c0_report.md`](13_phase_c0_report.md)).
 
 ---
 
@@ -135,7 +136,7 @@ Scope after B3. Smallest module that tests the mechanism.
 
 | ID | Prior state | Phase-B status | Trigger to flip |
 |---|---|---|---|
-| **D6** | `φ` only, λ≈0 | **Held pending B1 state-factor + intervention.** | High MLP R², poor linear R², **and/or** intervention miss — not on-path `k`. |
+| **D6** | `φ` only, λ≈0 | **Keep / extract** (B1 done; see `11`). | Overturn only if later probes show high MLP R², poor linear R², **and/or** intervention miss — not on-path `k`. |
 | **Hierarchy / FF-JEPA `G`** | Out of v1 | **Re-opened as a candidate**, not pre-selected. | B2: drift@5 large, or shorter `T` helps offset, or drift@5 small + Axis G still binds. |
 | **D3** | Euclidean v2 best readout | **Frozen; no more head churn.** | Only inside B3-reshape as encoder loss, not a thin head. |
 | **Option A** (hybrid cost) | One of two postures in `07` | **Demoted to optional bookkeeping.** | Reviewer demand only. |
@@ -208,14 +209,9 @@ Unchanged in spirit: representation-first bet; Phase C open-endedness / online l
 
 ## 12. Immediate next actions (engineering)
 
-**Code is in the tree** (see [`10_implementation_status.md`](10_implementation_status.md)). GPU dumps / probes / `T` sweep have **not** been run; D6 stays held.
+**Done (2026-08-29).** GPU dumps, probes (`--intervene-live`), drift@h=5, and the CEM `T` sweep were run. Record: [`11_phase_b_report.md`](11_phase_b_report.md), [`experiment_log.md`](experiment_log.md). D6 **keep**; hierarchy not fired as a `T`-shortening patch.
 
-1. Dump latents (do **not** assume autopsy `.pt` files exist).  
-2. Run B1 probes + intervention.  
-3. Run B2 drift + `--horizon` sweep (L2, matched pairs).  
-4. Record outcomes in `experiment_log.md`; flip D6 / hierarchy only per §6.
-
-Commands:
+B4 (build the B3 row) was **not** started. C0 then redirected to C-alt ([`13_phase_c0_report.md`](13_phase_c0_report.md)). **Do not run the commands below as “next work”** — they are the Phase B reproduction recipe. Current next step: CA0 in [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md).
 
 ```bash
 # dumps
