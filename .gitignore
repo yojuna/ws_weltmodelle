@@ -38,12 +38,10 @@ multirun/
 **/stablewm/videos/
 **/.stable-wm/
 
-# Large / generated media (keep small metric JSON via force-add if needed)
+# Large / generated media — campaign eval_results live in the submodule
 **/renders/
 **/eval_results/**/plan_debug/
-**/eval_results/**/*.mp4
-**/eval_results/**/*.png
-**/eval_results/**/*.jpg
+**/eval_results/**/plan_debug*/
 
 # Wandb
 wandb/
