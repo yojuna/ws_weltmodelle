@@ -10,7 +10,7 @@ usual failure mode.
 
 Local identity (both repos, **not** global): `user.name=yojuna`,
 `user.email=datamongeraami@gmail.com`. SSH for `git@github.com:` in these
-repos is `core.sshCommand` → `~/.ssh/yojuna_ed25519` (Host `github.com` in
+repos is `core.sshCommand` → `~/.ssh/yojuna` (Host `github.com` in
 `~/.ssh/config` is a different GitHub account).
 
 ## Repos

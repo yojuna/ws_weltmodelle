@@ -86,7 +86,7 @@ stop and ask.
   Submodule `origin` is the `yojuna/le-wm` fork; `upstream` is `lucas-maes/le-wm`.
   Push code to `origin feat/lewm-phi`, never to `upstream`, unless asked. Bump the
   parent gitlink after submodule commits. Local author is `yojuna` /
-  `datamongeraami@gmail.com` with `~/.ssh/yojuna_ed25519` (not the work identity).
+  `datamongeraami@gmail.com` with `~/.ssh/yojuna` (not the work identity).
 - **Two Python surfaces.** `train.py`/`eval.py` = Hydra + HDF5. `train_phi.py` /
   `eval_live.py` / `scripts/` = argparse + live sim. φ training does not use
   the author PushT HDF5.
