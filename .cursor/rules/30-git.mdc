@@ -55,9 +55,12 @@ How to cut commits, `exp/` `feat/` `tooling/` `fix/` branches, and worktrees: `3
 ## Do not
 
 - `git push` the submodule to `upstream` (`lucas-maes/le-wm`) unless asked.
-- Commit gitignored artifacts (`eval_results/` dumps, `*.ckpt`, `*.pt`, `wandb/`,
-  `docker/.venv/`, `**/stablewm/checkpoints|datasets|videos/`). Small metric
-  JSON may already be force-added; do not mass-add `eval_results/`.
+- Squash or rebase a PR into `main`. Land with a **merge commit** so every
+  commit stays reachable (`feat/lewm-phi` → `main` is the template).
+- Commit `*.ckpt`, `*.pt`, `wandb/`, `docker/.venv/`,
+  `**/stablewm/checkpoints|datasets|videos/`, or `eval_results/**/plan_debug/`.
+- Skip campaign `eval_results/` (json, csv, npz, png, html, md) — those are
+  the recorded numbers. Stage them on the topic branch; do not `git add -A`.
 - Amend, force-push, or skip hooks unless asked.
 - Use the work global identity (`haverboecker`) on these repos.
 

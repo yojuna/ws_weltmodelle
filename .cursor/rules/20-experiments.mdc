@@ -45,8 +45,9 @@ le-wm README before `AutoCostModel`.
 - Cuts in `thresholds.yaml` are frozen **before** the GPU bracket; do not
   retune after seeing `frac` / smear / encoder-floor numbers.
 - Multi-seed where variance matters. Record dataset-or-bank + checkpoint +
-  git SHA (submodule) + seed. Prefer `eval_results/…/metrics.json` (gitignored
-  dumps) and a short entry in `ws_le-wm/docs/experiment_log.md`.
+  git SHA (submodule) + seed. Write `eval_results/…` campaign artifacts
+  (json/csv/npz/png/html; tracked) and a short entry in
+  `ws_le-wm/docs/experiment_log.md`. Do not commit `plan_debug/` galleries.
 - `train.py` writes resolved `config.yaml` into the run dir — keep that.
   WandB `entity`/`project` live in `config/train/lewm.yaml`, not in code.
 

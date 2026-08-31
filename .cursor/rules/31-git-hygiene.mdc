@@ -49,7 +49,8 @@ both with PRs — see Branching. Do not push concluded work straight to `main`.
 
 Pick a prefix, then a kebab-case slug (no dates, no initials). The **full
 branch string is identical** in the parent and in `ws_le-wm/le-wm`. Land with
-a pull request. Do not commit concluded work on the integration branch.
+a pull request. Merge with a **merge commit** (never squash or rebase).
+Do not commit concluded work on the integration branch.
 
 | Prefix | Use for | Examples (both repos) |
 |--------|---------|------------------------|
@@ -62,7 +63,8 @@ a pull request. Do not commit concluded work on the integration branch.
 `main` with a merge commit). Do not open another `feat/lewm-phi`. Do not
 use `feat/` or `tooling/` for a campaign — that is `exp/`.
 
-**PR targets** (after the work is concluded):
+**PR targets** (after the work is concluded). Merge with a **merge commit**,
+never squash or rebase:
 
 | Repo | Topic branch (`exp/` · `feat/` · `tooling/` · `fix/`) | Merge into |
 |------|------------------------------------------------------|------------|
@@ -104,6 +106,9 @@ while `main` stays at the recorded SHA. Skip for a one-file typo.
 
 Share checkpoints: symlink `ws_le-wm/stablewm` to the main tree (or set
 `STABLEWM_HOME`). Do **not** share `eval_results/` across worktrees.
+
+Campaign `eval_results/` (json, csv, npz, png, html, md) are **committed** as
+the number record. `plan_debug/` galleries are not.
 
 Remove with `git worktree remove ../ws_weltmodelle-16-fidelity` when merged
 or abandoned. Do not `rm -rf` a worktree directory.
