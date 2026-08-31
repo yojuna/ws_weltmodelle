@@ -41,22 +41,49 @@ script freezes those cuts in thresholds.yaml before reading shares.
 Record smear-structure: systematic cone, not dead-leak, and bump le-wm.
 ```
 
-Push submodule `feat/…` first, then parent bump as its **own** commit
-(`Bump le-wm: <why>.` / `Record <result> and bump le-wm.`).
+Push the **topic branch** on the submodule first (`origin exp|feat|tooling/<slug>`),
+then the parent branch (docs + gitlink bump) as its **own** commits. Land
+both with PRs — see Branching. Do not push concluded work straight to `main`.
 
-## Branching (academic)
+## Branching — same name in both repos
 
-| Prefix | Meaning | Typical repo |
-|--------|---------|----------------|
-| `main` | Recorded, citable snapshot. No drive-by edits. | parent (`origin`); submodule `main` = `upstream/main` only |
-| `feat/<capability>` | Lasting code line (today: `feat/lewm-phi`) | submodule |
-| `exp/<campaign>` | One campaign / plan doc (`exp/16-fidelity`) | parent, and submodule if code forks |
-| `fix/<issue>` | Correctness, no claim change | wherever the bug lives |
+Pick a prefix, then a kebab-case slug (no dates, no initials). The **full
+branch string is identical** in the parent and in `ws_le-wm/le-wm`. Land with
+a pull request. Do not commit concluded work on the integration branch.
 
-Name `exp/` after the plan file (`16_fidelity_retrain_plan.md` →
-`exp/16-fidelity`). Do not retcon `main` to rewrite a recorded number; add a
-follow-up commit or `exp/` branch. Match names across parent and submodule
-when a campaign spans both.
+| Prefix | Use for | Examples (both repos) |
+|--------|---------|------------------------|
+| `exp/<name>` | A research campaign / plan doc | `exp/16-fidelity`, `exp/smear-structure` |
+| `feat/<name>` | A lasting capability, not a one-shot campaign | `feat/c1-anchors` (only if that gate opens) |
+| `tooling/<name>` | Infra: Docker, viz, Cursor rules, scripts plumbing | `tooling/docker-runsh`, `tooling/viz-v3` |
+| `fix/<name>` | Correctness, no claim change | `fix/goal-cache-key` |
+
+`feat/lewm-phi` is a **historical** name on the submodule (merged into
+`main` with a merge commit). Do not open another `feat/lewm-phi`. Do not
+use `feat/` or `tooling/` for a campaign — that is `exp/`.
+
+**PR targets** (after the work is concluded):
+
+| Repo | Topic branch (`exp/` · `feat/` · `tooling/` · `fix/`) | Merge into |
+|------|------------------------------------------------------|------------|
+| parent `ws_weltmodelle` | same name | `main` |
+| submodule `le-wm` | same name | `main` (`yojuna/le-wm`, **not** Lucas) |
+
+Submodule **`upstream/main`** is Lucas. Never PR into it. Never push to
+`upstream`. Our fork’s integration is **`origin/main`**.
+
+**Order:** merge the submodule PR first → on the parent topic branch bump
+the gitlink to that SHA → then merge the parent PR into `main`.
+
+```bash
+# parent (example: experiment)
+git checkout main && git pull
+git checkout -b exp/16-fidelity
+
+# submodule — identical name, from our main
+git -C ws_le-wm/le-wm checkout main && git -C ws_le-wm/le-wm pull
+git -C ws_le-wm/le-wm checkout -b exp/16-fidelity
+```
 
 ## Worktrees
 

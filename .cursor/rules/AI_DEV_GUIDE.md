@@ -15,7 +15,7 @@ injects persistent context. Layout:
 | `00-project-context.mdc` | **Always** | Identity, layout, research gates, working agreement. Kept small. |
 | `05-research-discipline.mdc` | **Always** | JEPA-native taste, localize-before-swap, plain language. |
 | `30-git.mdc` | **Always** | Parent vs submodule: where to edit, commit, and bump. |
-| `31-git-hygiene.mdc` | **Always** | Logical commits, `feat/`/`exp/`/`fix/` branches, sibling worktrees. |
+| `31-git-hygiene.mdc` | **Always** | Logical commits; `exp/` `feat/` `tooling/` `fix/` (same name in both repos); PRs into `main` on both. |
 | `40-docker-tooling.mdc` | **Always** | `run.sh`, image venv, how to actually execute code. |
 | `10-python.mdc` | **Auto** (`**/*.py`) | Hydra vs argparse surfaces, D6, tensors, tests. |
 | `20-experiments.mdc` | **Auto** (train/eval/scripts/config) | Entrypoints, checkpoints, protocol, reporting. |
@@ -93,8 +93,9 @@ you can discuss the same claim back. Jargon is for named quantities (`frac`,
 
 - **Two git repos.** Parent `origin` is `yojuna/ws_weltmodelle` (branch `main`).
   Submodule `origin` is the `yojuna/le-wm` fork; `upstream` is `lucas-maes/le-wm`.
-  Push code to `origin feat/lewm-phi`, never to `upstream`, unless asked. Bump the
-  parent gitlink after submodule commits. Local author is `yojuna` /
+  Push topic branches (`exp/` `feat/` `tooling/` `fix/`, same name as the
+  parent). Merge submodule PRs into **`origin/main`**, never into `upstream`.
+  Bump the parent gitlink after the submodule PR lands. Local author is `yojuna` /
   `datamongeraami@gmail.com` with `~/.ssh/yojuna` (not the work identity).
 - **Two Python surfaces.** `train.py`/`eval.py` = Hydra + HDF5. `train_phi.py` /
   `eval_live.py` / `scripts/` = argparse + live sim. φ training does not use

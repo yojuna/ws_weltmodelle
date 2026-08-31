@@ -25,11 +25,12 @@ Records the submodule as a gitlink (`160000`) at `ws_le-wm/le-wm`.
 
 | Remote | URL | Use |
 |--------|-----|-----|
-| `origin` | `git@github.com:yojuna/le-wm.git` | Our fork. Push `feat/lewm-phi` here. |
+| `origin` | `git@github.com:yojuna/le-wm.git` | Our fork. Integration = `main`. Topic branches: `exp/` `feat/` `tooling/` `fix/`. |
 | `upstream` | `https://github.com/lucas-maes/le-wm.git` | Author repo. `git fetch upstream` then merge/rebase onto `main`. |
 
-Work branch: `feat/lewm-phi` (tracks `origin/feat/lewm-phi`). `main` tracks
-`upstream/main`.
+Topic branch: **`exp/<name>`**, **`feat/<name>`**, or **`tooling/<name>`**,
+same string in parent and submodule (`31-git-hygiene.mdc`). Integration:
+**`main`** in both (`origin`). Submodule **`upstream/main`** is Lucas only.
 
 ```bash
 git clone --recurse-submodules git@github.com:yojuna/ws_weltmodelle.git
@@ -40,16 +41,16 @@ git submodule update --init --recursive   # if cloned without --recurse
 
 | Change | Commit in |
 |--------|-----------|
-| `ws_le-wm/le-wm/**` (code, configs, tests) | **submodule first**, then `git push origin feat/lewm-phi` |
-| `ws_le-wm/docs/**`, `docker/`, `docs/`, README | **parent**, then `git push origin main` |
-| After a submodule commit | parent: `git add ws_le-wm/le-wm` (bump SHA) |
+| `ws_le-wm/le-wm/**` (code, configs, tests) | submodule topic branch, then PR → `main` |
+| `ws_le-wm/docs/**`, `docker/`, `docs/`, README | parent topic branch, then PR → `main` |
+| After a submodule merge | parent: bump gitlink on that same topic branch, then merge that PR |
 
 Do not put research docs inside the submodule. Do not copy le-wm out of the
 submodule or treat the parent tree as a single repo when staging.
 
 Typical parent messages: `Bump le-wm: <why>.` or `Record <result> and bump le-wm.`
 Submodule: imperative, what landed (`Add smear-structure eval: …`).
-How to cut commits, `exp/` branches, and worktrees: `31-git-hygiene.mdc`.
+How to cut commits, `exp/` `feat/` `tooling/` `fix/` branches, and worktrees: `31-git-hygiene.mdc`.
 
 ## Do not
 
