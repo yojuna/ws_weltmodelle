@@ -22,7 +22,10 @@ git clone --recurse-submodules git@github.com:yojuna/ws_weltmodelle.git
 git submodule update --init --recursive
 ```
 
-Work on LeWM code inside `ws_le-wm/le-wm` on branch `feat/lewm-phi`.
+Work on LeWM code inside `ws_le-wm/le-wm`. Topic branches use the same name
+in both repos: `exp/<name>` (campaigns), `feat/<name>` (lasting features),
+`tooling/<name>` (Docker, viz, rules). See `.cursor/rules/31-git-hygiene.mdc`.
+Merge PRs into **`main`** on both repos (submodule `main` is the fork, not Lucas).
 
 Research docs: [`ws_le-wm/docs/README.md`](ws_le-wm/docs/README.md). Locked decisions: [`ws_le-wm/docs/00_decisions.md`](ws_le-wm/docs/00_decisions.md). Current plan: [`ws_le-wm/docs/16_fidelity_retrain_plan.md`](ws_le-wm/docs/16_fidelity_retrain_plan.md) (Part B not started).
 
