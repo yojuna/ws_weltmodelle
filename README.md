@@ -17,13 +17,13 @@ Local workspace for JEPA / world-model research.
 ## Submodule
 
 ```bash
-git clone --recurse-submodules <this-repo>
+git clone --recurse-submodules git@github.com:yojuna/ws_weltmodelle.git
 # or after clone:
 git submodule update --init --recursive
 ```
 
 Work on LeWM code inside `ws_le-wm/le-wm` on branch `feat/lewm-phi`.
 
-Research docs: [`ws_le-wm/docs/README.md`](ws_le-wm/docs/README.md). Current plan: [`ws_le-wm/docs/14_phase_c_alt_plan.md`](ws_le-wm/docs/14_phase_c_alt_plan.md) (CA0). Locked decisions: [`ws_le-wm/docs/00_decisions.md`](ws_le-wm/docs/00_decisions.md).
+Research docs: [`ws_le-wm/docs/README.md`](ws_le-wm/docs/README.md). Locked decisions: [`ws_le-wm/docs/00_decisions.md`](ws_le-wm/docs/00_decisions.md). Current plan: [`ws_le-wm/docs/16_fidelity_retrain_plan.md`](ws_le-wm/docs/16_fidelity_retrain_plan.md) (Part B not started).
 
-GPU work: see [`docs/docker_usage.md`](docs/docker_usage.md). Short version: `cd docker && ./run.sh up --build` once, then `./run.sh`. The container does not auto-start on reboot; `run.sh` starts it and stops it when the session ends. Do not recreate `ws_le-wm/le-wm/.venv` on the host.
+GPU work: see [`docs/docker_usage.md`](docs/docker_usage.md). Always `cd docker && ./run.sh …` (including CPU tests). Do not use host/system Python or create `ws_le-wm/le-wm/.venv`.

@@ -7,7 +7,8 @@ alwaysApply: true
 
 Local research workspace. It is **not** the upstream `le-wm` repo at the
 root. Python lives in the **submodule** `ws_le-wm/le-wm`. Git: `30-git.mdc`.
-Runtime: `40-docker-tooling.mdc`. Do not invent a host `.venv`. Parent
+Runtime: **only** `docker/run.sh` (`40-docker-tooling.mdc`) — including CPU
+tests. Do not invent a host `.venv` or use system Python. Parent
 `origin` is `yojuna/ws_weltmodelle`; submodule `origin` is `yojuna/le-wm`
 with `upstream` = `lucas-maes/le-wm`.
 
@@ -39,6 +40,7 @@ Python 3.10 + PyTorch in the **image** venv `/opt/venv`. `stable_pretraining`
 - Do **not** start C1, CA-train / Part B, Sep, FF-JEPA `G`, or a new cost head
   unless the user explicitly launches it. Failed gates: IQL-on-`φ`, imagined-`φ`.
 - `ws_le-wm/docs/00_decisions.md` wins over `drafts.md` and over improvisation.
+  Reasoning/taste: `05-research-discipline.mdc`.
 - Store **goal pixels** (or dataset indices), not stale latents; re-encode with
   the current `E`. Do not retune `thresholds.yaml` after seeing numbers.
 
@@ -51,3 +53,5 @@ Python 3.10 + PyTorch in the **image** venv `/opt/venv`. `stable_pretraining`
 - Never add a dependency without asking (image packages → Dockerfile).
 - When a convention is ambiguous, ask. Keep diffs minimal; prefer editing
   existing files. Do not refactor `stable_worldmodel`.
+- Write in short, plain sentences. Named quantities are fine; style jargon is
+  not. The human should be able to repeat the claim in the same words.

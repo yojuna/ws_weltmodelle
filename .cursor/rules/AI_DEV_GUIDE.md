@@ -13,7 +13,9 @@ injects persistent context. Layout:
 | File | Activation | Purpose |
 |------|-----------|---------|
 | `00-project-context.mdc` | **Always** | Identity, layout, research gates, working agreement. Kept small. |
+| `05-research-discipline.mdc` | **Always** | JEPA-native taste, localize-before-swap, plain language. |
 | `30-git.mdc` | **Always** | Parent vs submodule: where to edit, commit, and bump. |
+| `31-git-hygiene.mdc` | **Always** | Logical commits, `feat/`/`exp/`/`fix/` branches, sibling worktrees. |
 | `40-docker-tooling.mdc` | **Always** | `run.sh`, image venv, how to actually execute code. |
 | `10-python.mdc` | **Auto** (`**/*.py`) | Hydra vs argparse surfaces, D6, tensors, tests. |
 | `20-experiments.mdc` | **Auto** (train/eval/scripts/config) | Entrypoints, checkpoints, protocol, reporting. |
@@ -37,12 +39,14 @@ Good triggers:
 - Edited files at the workspace root as if this were `lucas-maes/le-wm`.
 - Committed docs inside the submodule, or code only in the parent.
 - Created `ws_le-wm/le-wm/.venv` or `pip install` on the host.
+- Ran tests or `python` on the host instead of `docker/run.sh`.
 - Used `docker compose run` / `down` instead of `./run.sh`.
 - Added a third loss / EMA / stop-grad "to help" the trunk, or a new cost head.
 - Started C1 / Part B / Sep without being asked.
 - Hardcoded a hyperparameter; used `policy=…_object.ckpt`; retuned
   `thresholds.yaml` after seeing numbers.
 - Broke column normalization or `frameskip → action_encoder.input_dim`.
+- Mixed docs/docker/code in one commit, `git add -A`, or experimented on `main`.
 
 ---
 
@@ -57,7 +61,8 @@ when scope is in doubt. The agent reasons from real code, not a guess of
 upstream LeWM.
 
 **Name the invariants.** Loss = MSE + SIGReg; D6 detach; embeddings `(B, T, D)`;
-live bank not HDF5 for `φ`. Specificity beats "make it clean".
+live bank not HDF5 for `φ`. Discipline: `05-research-discipline.mdc`. Specificity
+beats "make it clean" and beats "be creative."
 
 **Keep changes reversible and small.** Match surrounding style; prefer editing
 existing files. Code in the submodule, writeups in `ws_le-wm/docs/`.
@@ -65,11 +70,15 @@ existing files. Code in the submodule, writeups in `ws_le-wm/docs/`.
 **Ask, don't guess.** Coordinate/units/shape/dtype/dataset-version ambiguity →
 stop and ask.
 
+**Plain language.** Ask the agent to answer in short, ordinary sentences so
+you can discuss the same claim back. Jargon is for named quantities (`frac`,
+`d_end`), not for style.
+
 ---
 
 ## 4. Reproducibility checklist (before you trust a number)
 
-- [ ] Ran inside `docker/run.sh`, not a host venv.
+- [ ] Ran inside `docker/run.sh` (including CPU tests) — never host/system Python.
 - [ ] Knobs from Hydra / argparse / `thresholds.yaml` — nothing new hardcoded.
 - [ ] Seed threaded (`cfg.seed` or `--seed` + `torch.Generator`).
 - [ ] Upstream train: resolved `config.yaml` in the run dir; WandB has config + SHA.
@@ -90,8 +99,9 @@ stop and ask.
 - **Two Python surfaces.** `train.py`/`eval.py` = Hydra + HDF5. `train_phi.py` /
   `eval_live.py` / `scripts/` = argparse + live sim. φ training does not use
   the author PushT HDF5.
-- **Runtime is the image.** `/opt/venv`; bind-mount `/workspace`. Package
-  changes = Dockerfile rebuild.
+- **Runtime is the image.** Every `python` invocation is `cd docker && ./run.sh
+  python …` — CPU tests included. `/opt/venv`; bind-mount `/workspace`. Package
+  changes = Dockerfile rebuild. Never host/system Python.
 - **Loss integrity + D6.** Trunk = pred + SIGReg. `L_reach` stops at `φ`.
 - **Gated work.** C1, CA-train/Part B, Sep, new cost heads — only when
   explicitly launched. Normative: `00_decisions.md`.

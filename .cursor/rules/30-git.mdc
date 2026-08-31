@@ -49,6 +49,7 @@ submodule or treat the parent tree as a single repo when staging.
 
 Typical parent messages: `Bump le-wm: <why>.` or `Record <result> and bump le-wm.`
 Submodule: imperative, what landed (`Add smear-structure eval: …`).
+How to cut commits, `exp/` branches, and worktrees: `31-git-hygiene.mdc`.
 
 ## Do not
 

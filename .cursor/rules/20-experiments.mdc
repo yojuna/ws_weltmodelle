@@ -6,8 +6,8 @@ alwaysApply: false
 
 # Running experiments
 
-Launch GPU jobs with `docker/run.sh` (`40-docker-tooling.mdc`). Do not run
-train/eval on a host venv.
+Launch **every** Python job with `docker/run.sh` (`40-docker-tooling.mdc`),
+including CPU tests. Never host/system Python.
 
 ## Which entrypoint
 

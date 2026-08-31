@@ -19,12 +19,14 @@ The named container does **not** start on boot. `./run.sh` starts it; leaving
 the session (or `./run.sh stop`) sends SIGTERM and waits up to 30s. The repo is
 bind-mounted; there are no Docker volumes. Host files survive stop and reboot.
 
-| Host | In container |
-|------|----------------|
-| `ws_weltmodelle/` | `/workspace` |
-| `ws_le-wm/le-wm/` | cwd |
-| `ws_le-wm/stablewm/` | `$STABLEWM_HOME` |
-| `docker/home/` | `$HOME` |
+| Host | In container | Role |
+|------|----------------|------|
+| this `ws_weltmodelle/` tree | `/workspace` | compose bind `..:/workspace` from `docker/`; **no** named volumes |
+| `ws_le-wm/le-wm/` | `/workspace/ws_le-wm/le-wm` | cwd |
+| `ws_le-wm/docs/` | `/workspace/ws_le-wm/docs` | research docs (parent git) |
+| `ws_le-wm/stablewm/` | `/workspace/ws_le-wm/stablewm` | `$STABLEWM_HOME` |
+| `docker/home/` | `/workspace/docker/home` | `$HOME` |
+| (not a host path) | `/opt/venv` | image Python |
 
 Needs NVIDIA driver + nvidia-container-toolkit. Do not create
 `ws_le-wm/le-wm/.venv` on the host.

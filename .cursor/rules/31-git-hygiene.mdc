@@ -1,0 +1,82 @@
+---
+description: Commit hygiene, research branches, and worktrees (always apply when committing or starting a campaign)
+alwaysApply: true
+---
+
+# Git hygiene — logical commits, research branches, worktrees
+
+Layout/remotes: `30-git.mdc`. This file is how to **cut** the work. Do not
+`git add -A`. Do not commit on `main` for in-flight experiments.
+
+## Logical commits
+
+One commit = one reviewable decision. Stage **named paths** only.
+
+Split these; never mix in one commit:
+
+- submodule code vs parent docs vs docker vs rules vs a gitlink bump
+- a frozen `thresholds.yaml` cut vs the script that reads it vs the writeup
+- a failing test fix vs a new diagnostic
+
+**Message** (subject ≤ ~72 chars, body required unless the subject is already
+the whole issue):
+
+- Subject: outcome or capability, in the existing house style.
+- Body: the **issue** — what was wrong/ambiguous, why this change, what it
+  does *not* claim. Not a file list.
+
+```
+# ❌ BAD
+Update smear_structure.py and docs
+wip
+fix stuff
+
+# ✅ GOOD (submodule)
+Add smear-structure eval: live vs dead occupancy, kNN consistency, pose control.
+
+CA0 infidelity could be dead-leak or a systematic cone. This dump-only
+script freezes those cuts in thresholds.yaml before reading shares.
+
+# ✅ GOOD (parent)
+Record smear-structure: systematic cone, not dead-leak, and bump le-wm.
+```
+
+Push submodule `feat/…` first, then parent bump as its **own** commit
+(`Bump le-wm: <why>.` / `Record <result> and bump le-wm.`).
+
+## Branching (academic)
+
+| Prefix | Meaning | Typical repo |
+|--------|---------|----------------|
+| `main` | Recorded, citable snapshot. No drive-by edits. | parent (`origin`); submodule `main` = `upstream/main` only |
+| `feat/<capability>` | Lasting code line (today: `feat/lewm-phi`) | submodule |
+| `exp/<campaign>` | One campaign / plan doc (`exp/16-fidelity`) | parent, and submodule if code forks |
+| `fix/<issue>` | Correctness, no claim change | wherever the bug lives |
+
+Name `exp/` after the plan file (`16_fidelity_retrain_plan.md` →
+`exp/16-fidelity`). Do not retcon `main` to rewrite a recorded number; add a
+follow-up commit or `exp/` branch. Match names across parent and submodule
+when a campaign spans both.
+
+## Worktrees
+
+Use a **sibling** worktree (not a folder inside this clone) so that
+worktree's `docker/run.sh` bind-mounts **that** tree — GPU jobs and dirty
+files stay isolated. Nested `.worktrees/` would not be the container cwd
+(`/workspace/ws_le-wm/le-wm`).
+
+```bash
+git worktree add -b exp/16-fidelity ../ws_weltmodelle-16-fidelity main
+cd ../ws_weltmodelle-16-fidelity
+git submodule update --init --recursive
+# then docker from THIS tree: cd docker && ./run.sh …
+```
+
+When: a GPU run is in progress here; two campaigns at once; a risky retrain
+while `main` stays at the recorded SHA. Skip for a one-file typo.
+
+Share checkpoints: symlink `ws_le-wm/stablewm` to the main tree (or set
+`STABLEWM_HOME`). Do **not** share `eval_results/` across worktrees.
+
+Remove with `git worktree remove ../ws_weltmodelle-16-fidelity` when merged
+or abandoned. Do not `rm -rf` a worktree directory.

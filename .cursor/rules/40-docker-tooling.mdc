@@ -1,12 +1,24 @@
 ---
-description: GPU Docker runtime, image venv, and how to run Python / tests / evals
+description: All Python, tests, train, and eval run only via docker/run.sh — never host/system Python
 alwaysApply: true
 ---
 
 # Docker and tooling
 
-GPU work runs in a **named** container. Always use `docker/run.sh` from
-`docker/`. Full notes: `docs/docker_usage.md`.
+**All project runtime goes through `docker/run.sh`.** That includes CPU-only
+tests, one-liners, imports, train, eval, and diagnostics. Host `python` /
+`python3` / `/usr/bin/python` / a host venv / `uv run` are wrong even for a
+"quick" test. Git itself stays on the host. Full notes: `docs/docker_usage.md`.
+
+```bash
+# ❌ BAD  (system Python, missing torch/swm, wrong GL)
+python scripts/test_smear_structure.py
+python3 -c "import torch"
+
+# ✅ GOOD  (from docker/)
+./run.sh python scripts/test_smear_structure.py
+./run.sh python -c "import torch; print(torch.cuda.is_available())"
+```
 
 ## Why run.sh
 
@@ -27,15 +39,33 @@ cd docker
 If already up via `./run.sh up`, a later `./run.sh python …` does **not** stop
 it — call `./run.sh stop` when finished. No restart-on-boot.
 
-## Image and mounts
+Image `weltmodelle-lewm:local`: CUDA 12.6, Python 3.10, torch cu126,
+`stable-worldmodel[train,env]`. Startup does not pip.
 
-- Image `weltmodelle-lewm:local`: CUDA 12.6, Python 3.10, torch cu126,
-  `stable-worldmodel[train,env]`, sklearn, matplotlib, `datasets>=2`.
-- Python is **`/opt/venv` inside the image**. Startup does not pip.
-- Bind-mount: host `ws_weltmodelle/` → `/workspace`. **No** named volumes.
-- cwd: `/workspace/ws_le-wm/le-wm`. `$STABLEWM_HOME` =
-  `/workspace/ws_le-wm/stablewm`. `$HOME` = `/workspace/docker/home`.
-- `compose exec` skips the entrypoint; compose sets `PATH` to include `/opt/venv/bin`.
+## Bind mounts (the only filesystem)
+
+Compose bind is `..:/workspace` from `docker/`, so **this clone (or sibling
+worktree) is `/workspace`**. There are **no** named/anonymous Docker volumes.
+Edits and `eval_results/` on either side are the same files. Stop/reboot keep
+host data. `/opt/venv` is **in the image**, not mounted.
+
+| Host (this tree) | In container | Notes |
+|------------------|--------------|--------|
+| `<this-ws_weltmodelle>/` | `/workspace` | Whole workspace; compose `..:/workspace` |
+| `ws_le-wm/le-wm/` | `/workspace/ws_le-wm/le-wm` | **cwd**. Scripts, `eval_results/`, configs |
+| `ws_le-wm/docs/` | `/workspace/ws_le-wm/docs` | Research docs (parent git, not the submodule) |
+| `ws_le-wm/stablewm/` | `/workspace/ws_le-wm/stablewm` | `$STABLEWM_HOME` (ckpts, HDF5; gitignored caches) |
+| `docker/` | `/workspace/docker` | Dockerfile, `run.sh`, compose |
+| `docker/home/` | `/workspace/docker/home` | `$HOME` (dotfiles, caches; not `~` on the host) |
+| `docs/` | `/workspace/docs` | Workspace how-tos |
+| — | `/opt/venv` | Image Python; **not** a host path. Never `le-wm/.venv` |
+| `/tmp/.X11-unix` | `/tmp/.X11-unix` | Host X for GLFW viewers |
+
+A sibling worktree is a different `/workspace`: run **that** tree’s
+`docker/run.sh`. Do not assume the main clone’s files unless they are the
+same bind.
+
+`compose exec` skips the entrypoint; compose sets `PATH` to `/opt/venv/bin`.
 
 Torch/CEM use the NVIDIA GPU. MuJoCo/PushT: **EGL** offscreen, **GLFW** on the
 host X (Intel). Do not set `__GLX_VENDOR_LIBRARY_NAME=nvidia`.
@@ -59,6 +89,6 @@ From `docker/` (cwd inside the container is already `le-wm/`):
 ./run.sh python train.py data=pusht          # upstream HDF5 train; rare here
 ```
 
-Tests are `scripts/test_*.py` with a `__main__` runner (`python scripts/test_foo.py`),
-not a repo-wide pytest suite. CPU tests still belong in the container so the
-venv matches. Needs NVIDIA driver + nvidia-container-toolkit.
+Tests are `scripts/test_*.py` with a `__main__` runner. Invoke them as
+`./run.sh python scripts/test_foo.py` from `docker/` — not a host pytest
+suite and not system Python. Needs NVIDIA driver + nvidia-container-toolkit.

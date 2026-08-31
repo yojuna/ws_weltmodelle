@@ -42,7 +42,8 @@ their config styles without asking.
 - Seeds: `cfg.seed` or the script's `--seed`; new randomness takes an explicit
   `torch.Generator().manual_seed(...)`.
 - Type hints on public functions. Fail loudly in train/rollout loops.
-- Tests: `scripts/test_*.py` (asserts + `if __name__ == "__main__"`). Run
-  `python scripts/test_foo.py` in the container. Add a focused test for
-  nontrivial math rather than trusting by inspection.
+- Tests: `scripts/test_*.py` (asserts + `if __name__ == "__main__"`). Always
+  `cd docker && ./run.sh python scripts/test_foo.py` — never host/system
+  Python. Add a focused test for nontrivial math rather than trusting by
+  inspection.
 - Do not refactor `stable_worldmodel`; hook cost + `φ` locally.
