@@ -1,0 +1,48 @@
+---
+description: Python conventions for upstream LeWM (Hydra) and lewm-phi (argparse) in the submodule
+globs: ["**/*.py"]
+alwaysApply: false
+---
+
+# Python / LeWM / lewm-phi
+
+All of this code is `ws_le-wm/le-wm/**` (submodule). Two surfaces — do not mix
+their config styles without asking.
+
+## Upstream (`train.py`, `eval.py`, `config/`)
+
+- Hydra + OmegaConf. Build with `hydra.utils.instantiate(cfg.model)`. Mutate
+  with `open_dict(cfg)` as existing code does.
+- Preserve derived couplings, e.g.
+  `cfg.model.action_encoder.input_dim = cfg.data.dataset.frameskip * dataset.get_dim("action")`.
+- Training lives in `spt.Module` (`lejepa_forward`). Log
+  `self.log_dict(..., on_step=..., sync_dist=True)`; loss keys `*/*_loss`.
+  Don't bypass `spt.Manager` / `pl.Trainer`.
+- HDF5/Lance via `swm.data.load_dataset`; names resolve under `$STABLEWM_HOME`.
+  Action NaNs → `torch.nan_to_num`; column norms via `get_column_normalizer`.
+
+## lewm-phi (`train_phi.py`, `eval_live.py`, `reachability.py`, `scripts/`)
+
+- Argparse (plus `config/train/phi_pusht.yaml` as documented defaults). Do not
+  silently convert these to Hydra or fork a script with inline constants.
+- **No author HDF5 for `φ` training** (`ws_le-wm/docs/data_source.md`). Live
+  `TrajectoryBank` in `swm/PushT-v1` via `eval_logging.pairs`.
+- `ReachabilityHead` in `reachability.py`; wire through `JEPA.reach` /
+  `plan_cost` (`"l2_z"` | `"phi_d"`). Default remains L2-in-`z`.
+- **D6:** `project(..., detach_z=True)` — no `L_reach` grad into `E`.
+- Shared live setup: `eval_setup.py`, `eval_logging/`. Dump helpers: `phase_b.py`.
+- Diagnostic cuts: read `thresholds.yaml`; do not retune after seeing numbers.
+
+## Tensors, devices, tests
+
+- Embeddings `(B, T, D)`. Context/target:
+  `ctx = emb[:, :history_size]`, `tgt = emb[:, num_preds:]`.
+- No hardcoded `.cuda()`. Lightning or `next(self.parameters()).device`.
+  Avoid `.item()` in hot loops.
+- Seeds: `cfg.seed` or the script's `--seed`; new randomness takes an explicit
+  `torch.Generator().manual_seed(...)`.
+- Type hints on public functions. Fail loudly in train/rollout loops.
+- Tests: `scripts/test_*.py` (asserts + `if __name__ == "__main__"`). Run
+  `python scripts/test_foo.py` in the container. Add a focused test for
+  nontrivial math rather than trusting by inspection.
+- Do not refactor `stable_worldmodel`; hook cost + `φ` locally.

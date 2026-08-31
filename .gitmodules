@@ -1,3 +1,3 @@
 [submodule "ws_le-wm/le-wm"]
 	path = ws_le-wm/le-wm
-	url = https://github.com/lucas-maes/le-wm.git
+	url = git@github.com:yojuna/le-wm.git

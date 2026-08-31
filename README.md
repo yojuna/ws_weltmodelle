@@ -6,7 +6,7 @@ Local workspace for JEPA / world-model research.
 
 | Path | Role |
 |------|------|
-| `ws_le-wm/le-wm` | [lucas-maes/le-wm](https://github.com/lucas-maes/le-wm) **submodule** (feature work on `feat/lewm-phi`) |
+| `ws_le-wm/le-wm` | [yojuna/le-wm](https://github.com/yojuna/le-wm) **submodule** (`feat/lewm-phi`); upstream [lucas-maes/le-wm](https://github.com/lucas-maes/le-wm) |
 | `ws_le-wm/docs` | Design specs and decisions for lewm-phi |
 | `ws_le-wm/stablewm` | Local `$STABLEWM_HOME` cache (checkpoints ignored) |
 | `docker/` | CUDA 12.6 GPU container (see [`docs/docker_usage.md`](docs/docker_usage.md)) |

@@ -1,0 +1,53 @@
+---
+description: Workspace identity, layout, research gates, and working agreement
+alwaysApply: true
+---
+
+# Project: ws_weltmodelle — LeWM + thin reachability `φ`
+
+Local research workspace. It is **not** the upstream `le-wm` repo at the
+root. Python lives in the **submodule** `ws_le-wm/le-wm`. Git: `30-git.mdc`.
+Runtime: `40-docker-tooling.mdc`. Do not invent a host `.venv`. Parent
+`origin` is `yojuna/ws_weltmodelle`; submodule `origin` is `yojuna/le-wm`
+with `upstream` = `lucas-maes/le-wm`.
+
+## Layout
+
+| Path | Lives in | Role |
+|------|----------|------|
+| `ws_le-wm/le-wm/` | submodule | Code (LeWM + lewm-phi) |
+| `ws_le-wm/docs/` | parent | Design specs; `00_decisions.md` is normative |
+| `ws_le-wm/stablewm/` | parent (caches gitignored) | `$STABLEWM_HOME` |
+| `docker/` | parent | GPU container |
+| `docs/docker_usage.md` | parent | How to run the container |
+
+Current line of work: **lewm-phi** — frozen JEPA trunk + thin `φ` on **PushT**.
+Reacher is diagnostic only. Status and next step: `ws_le-wm/docs/README.md`.
+
+## Stack (do not substitute)
+
+Python 3.10 + PyTorch in the **image** venv `/opt/venv`. `stable_pretraining`
+(spt) and `stable_worldmodel` (swm). Upstream train/eval: Hydra under
+`ws_le-wm/le-wm/config/`. lewm-phi train/eval/diagnostics: argparse scripts.
+
+## Research gates (do not silently undo)
+
+- Trunk objective is **exactly** next-embedding MSE + SIGReg. Never add/remove/
+  reweight a loss, or add EMA / stop-grad / pretrained encoder / aux loss on
+  the trunk, without flagging it — that changes LeWM's claim.
+- **D6:** `L_reach` trains `φ` only (`z.detach()`). No reachability grad into `E`.
+- Do **not** start C1, CA-train / Part B, Sep, FF-JEPA `G`, or a new cost head
+  unless the user explicitly launches it. Failed gates: IQL-on-`φ`, imagined-`φ`.
+- `ws_le-wm/docs/00_decisions.md` wins over `drafts.md` and over improvisation.
+- Store **goal pixels** (or dataset indices), not stale latents; re-encode with
+  the current `E`. Do not retune `thresholds.yaml` after seeing numbers.
+
+## Working agreement
+
+- Everything user-visible in upstream train/eval is config-driven. lewm-phi
+  knobs live in argparse / `config/train/phi_pusht.yaml` — still no magic
+  numbers scattered in new code.
+- Before multi-file changes or any refactor, state a short plan and wait.
+- Never add a dependency without asking (image packages → Dockerfile).
+- When a convention is ambiguous, ask. Keep diffs minimal; prefer editing
+  existing files. Do not refactor `stable_worldmodel`.

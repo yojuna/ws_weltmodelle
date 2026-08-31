@@ -1,0 +1,56 @@
+---
+description: Train, live eval, checkpoints, diagnostics, and how to record numbers
+globs: ["**/config/**/*.yaml", "**/train*.py", "**/eval*.py", "**/scripts/**", "**/thresholds.yaml"]
+alwaysApply: false
+---
+
+# Running experiments
+
+Launch GPU jobs with `docker/run.sh` (`40-docker-tooling.mdc`). Do not run
+train/eval on a host venv.
+
+## Which entrypoint
+
+| Job | Command (cwd = le-wm inside the container) |
+|-----|--------------------------------------------|
+| Live planning (current) | `python eval_live.py --env pusht …` |
+| Train `φ` (live bank) | `python train_phi.py …` |
+| Upstream WM train | `python train.py data=pusht` (Hydra `config_name=lewm`) |
+| Upstream dataset eval | `python eval.py --config-name=pusht.yaml policy=<relpath>` |
+| Diagnostics | `python scripts/<name>.py` (dump/probe/oracle/viz/floor) |
+
+lewm-phi does **not** use the HF PushT expert HDF5 for training `φ`. Eval still
+loads the pretrained HF **checkpoint** (`hf_pusht` / `eval_setup.load_lewm_checkpoint`).
+
+## Checkpoints
+
+Under `$STABLEWM_HOME` (here: `ws_le-wm/stablewm/`). Two flavors, **not**
+interchangeable:
+
+- `<name>_object.ckpt` — serialized object for `eval.py` /
+  `swm.policy.AutoCostModel`.
+- `<name>_weights.ckpt` / HF `weights.pt` — `state_dict`.
+
+`policy=` is relative to `$STABLEWM_HOME` **without** the `_object.ckpt` suffix
+(`policy=pusht/lewm`, not `…_object.ckpt`). Convert HF `weights.pt` as in the
+le-wm README before `AutoCostModel`.
+
+## Protocol and reporting
+
+- Keep `history_size`, `num_preds`, `frameskip`, CEM horizon/receding/action_block
+  identical across compared runs; flag if you change them.
+- PushT defaults: `embed_dim=192`, `history_size=3`, `img_size=224`, CEM
+  `horizon=5`, `action_block=5` (frameskip). Offset protocol: `goal_offset=25`,
+  `eval_budget=50`.
+- Cuts in `thresholds.yaml` are frozen **before** the GPU bracket; do not
+  retune after seeing `frac` / smear / encoder-floor numbers.
+- Multi-seed where variance matters. Record dataset-or-bank + checkpoint +
+  git SHA (submodule) + seed. Prefer `eval_results/…/metrics.json` (gitignored
+  dumps) and a short entry in `ws_le-wm/docs/experiment_log.md`.
+- `train.py` writes resolved `config.yaml` into the run dir — keep that.
+  WandB `entity`/`project` live in `config/train/lewm.yaml`, not in code.
+
+## Do not (unless the user launches it)
+
+Start C1, CA-train / Part B, a new cost head, or Sep. Do not treat Reacher
+numbers as the PushT claim. Do not present a single lucky seed as a result.
