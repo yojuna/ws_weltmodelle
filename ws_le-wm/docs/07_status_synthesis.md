@@ -4,7 +4,7 @@
 **Chronicle:** [`experiment_log.md`](experiment_log.md) · protocols `03`–`06`.  
 **Full writeup:** [`08_phase_a_report.md`](08_phase_a_report.md) (design + every campaign in one narrative).  
 **Phase B:** [`09_phase_b_plan.md`](09_phase_b_plan.md) / [`11_phase_b_report.md`](11_phase_b_report.md) — diagnose geometry vs predictor-horizon vs representation; do not iterate cost heads.  
-**Current planning (2026-08-30):** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) — C0 Outcome B (model fidelity); CA0 reported INFIDELITY; CA-train not started. This file remains the Phase A evidence ledger.
+**Current planning (2026-08-31):** [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md) — CONFIRMED_INFIDELITY then BLOCK_INFIDELITY; smear is a systematic cone, not dead-leak; Part B not started. This file remains the Phase A evidence ledger. C-alt localize spec: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md).
 
 ---
 

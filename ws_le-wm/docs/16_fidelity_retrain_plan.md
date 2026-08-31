@@ -132,13 +132,15 @@ python scripts/block_motion_eval.py \
 
 **B.eval as-run (2026-08-31):** **BLOCK_INFIDELITY**. GoalPush 80 eps → 237 windows ≥ 2 px/step median; n=50 used; mean pair block-step median **7.34**. Bank `frac` **0.887**, small-step tercile **1.70** (frozen edges), angle **~51°**, block-xy step median **5.26**. Cuts were not retuned. Artifact: `eval_results/pusht/block_motion_eval/seed0/summary.json`. **Still does not launch Part B.**
 
+**Smear-structure as-run (2026-08-31, dump-only):** live seeds 0–2 **MIXED + SYSTEMATIC + PERP_NO_POSE**; block-moving **MOTION_CONFUSION + SYSTEMATIC + PERP_NO_POSE**. kNN cosine of `r` 0.34–0.44 vs shuffle null ~0.07–0.10. Dead-leak is not the majority. Pose is in the parallel component, not in `r`. Findings: [`16a`](16a_infidelity_investigation.md) §5.3. Artifact: `eval_results/pusht/smear_structure/seed0/`. **Still does not launch Part B.**
+
 ---
 
 # PART B — Multi-step fidelity retrain (CONDITIONAL on Part A)
 
 **Do not start unless A = PARTIAL or INFIDELITY, and A-confirm is not SEED_FLUKE / ENCODER_JITTER.** As-run: CONFIRMED_INFIDELITY. This is Step 1 of the endgame path (fidelity → PushT → multi-task → few-shot); scope here is **PushT only**. **This section records the retrain design; it does not launch it.**
 
-A-confirm localized the fault: `P` emits motion and hears actions, but Δz is **~41–46° off** in full space (wrong map), **worst on small steps** (`frac` 2.17 / 0.96 / 0.66), and the live-bank `frac` is **mostly pusher motion**. B’s evaluation must therefore include a **block-moving bank** and a **small-step tercile** named target — or “fidelity fixed” could pass on the wrong object and the wrong part of the step-size distribution.
+A-confirm localized the fault: `P` emits motion and hears actions, but Δz is **~41–46° off** in full space (wrong map), **worst on small steps** (`frac` 2.17 / 0.96 / 0.66), and the live-bank `frac` is **mostly pusher motion**. Smear-structure then showed that leftover is a **systematic cone** (kNN cosine 0.34–0.44), **not occupancy-dead leak**, and on the block bank it sits **inside the true-Δz motion span** (66%). Pose is in the along-axis component, not in the perpendicular residual. B’s evaluation must therefore include a **block-moving bank**, a **small-step tercile**, and **directional-concentration** scalars (cone angle, perpendicular-error fraction) — or “fidelity fixed” could pass on the wrong object, the wrong step size, or a magnitude-only `frac` drop.
 
 ## B.0 — Why this specific move
 
@@ -177,7 +179,7 @@ Two gates, in order, both measured with the `viz`/report instrument (pre/post ov
 
 **B.4a — Fidelity fixed (primary):**
 - CA0 drift curve **flattens**: single-step error `frac` (Part A metric) drops toward the encoder floor; multi-step ‖ẑ_end−z*‖ and toward-goal recover **without** teacher-forcing.
-- A5 **full-space** action-direction angle **shrinks** (the wrong-map scalar; ~41–46° pre).
+- A5 **full-space** action-direction angle **shrinks** (the wrong-map scalar; ~41–46° pre) **and** the perpendicular-error fraction drops (pre ~88% of ‖err‖² on the live-bank). `frac` alone can hide a magnitude-only change.
 - **Wall-band drift** (the localized weak spot, ~1.5× free) improves — named success criterion, since a fix that leaves walls broken isn't a fix for hard PushT.
 - Effective rank does **not** collapse (D1 monitor) — fidelity gained without killing the representation.
 
@@ -185,7 +187,9 @@ Two gates, in order, both measured with the `viz`/report instrument (pre/post ov
 
 **B.eval-tercile — Step-size stratification (small-step named target).** Pre `frac` is worst on small true steps (seed-0: small 2.17, mid 0.96, large 0.66). Small steps are where identity is a strong baseline and where directional error dominates; they are what **accumulates** over a rollout. Report `frac` in the same adjacent-‖Δz‖ terciles as A-confirm (tercile edges frozen from the **pre** bank, not re-fit post). **Fidelity-fixed requires the small-step tercile to improve**, not only the bank-median. An average-only win that leaves small-step `frac` near 2 would not be expected to flatten drift.
 
-**B.4b — PushT solved (the proof):** on a **faithful** B-multistep model (B.4a **and** B.eval-block **and** B.eval-tercile), run the **light asymmetric propose-and-score actor** (the re-opened C1 — now justified because scoring runs through a model that no longer lies) on the **hard-offset** band that has been the standing claim. Pre-register the success bar. If a faithful model + light actor still fails hard offset, *then* hard geometry is the genuine residual — but we can only ask that cleanly once fidelity holds on pusher, block, and small steps.
+**B.eval-smear — Directional concentration (named).** Pre: perpendicular leftover is systematic (kNN cosine 0.34–0.44 vs null ~0.1), not occupancy-dead leak, and on the block bank it sits in the true-Δz motion span (66%). Report post cone angle, perpendicular-error fraction, and neighbor cosine of `r` on the **same** banks. A `frac` drop that leaves the 40° cone and ~88% perp fraction intact is not fidelity-fixed. Numeric post bars freeze immediately before B, not from these pre numbers after the fact.
+
+**B.4b — PushT solved (the proof):** on a **faithful** B-multistep model (B.4a **and** B.eval-block **and** B.eval-tercile **and** B.eval-smear), run the **light asymmetric propose-and-score actor** (the re-opened C1 — now justified because scoring runs through a model that no longer lies) on the **hard-offset** band that has been the standing claim. Pre-register the success bar. If a faithful model + light actor still fails hard offset, *then* hard geometry is the genuine residual — but we can only ask that cleanly once fidelity holds on pusher, block, small steps, and heading.
 
 ## B.5 — Ablations (defend the claim)
 
@@ -201,7 +205,7 @@ Numeric bars are **not** filled in from A-confirm after the fact. Freeze them in
 - **Fidelity-fixed:**
   - bank-median `frac` post ≤ agreed fraction of `frac` pre, on the **live-bank** *and* on the **block-moving bank**;
   - **small-step tercile** `frac` post ≤ agreed fraction of that tercile’s `frac` pre (tercile edges frozen from pre);
-  - full-space A5 angle shrinks to an agreed bar;
+  - full-space A5 angle shrinks to an agreed bar **and** perpendicular-error fraction / neighbor cosine of `r` drop to agreed bars (B.eval-smear);
   - untethered multi-step toward-goal ≥ agreed bar;
   - wall-band drift ≤ agreed bar.
 - **PushT-solved:** hard-offset success ≥ agreed bar with the light actor.
@@ -217,7 +221,8 @@ A run that only quotes live-bank median `frac` is an incomplete B.4a.
 | **A-calibrate** | pass (floor 0; dump = fresh P) | **Done.** | Fail → fix instrument, halt. |
 | **A-decide + A-confirm** | **CONFIRMED_INFIDELITY** | **Done.** Fork re-derived on `frac`, not 1.43 vs 1.0. | ACCUMULATION would have stopped retrain. |
 | **B.eval-block / B.eval-tercile** | **BLOCK_INFIDELITY** | **Done (pre-retrain).** Bank `frac` 0.887; small-step 1.70. Claim is pusher **and** block. | Do not retune cuts. |
-| **CA-train (retrain)** | Not started | **Gated on CONFIRMED_INFIDELITY + BLOCK_INFIDELITY; eval must include both banks + small-step tercile.** | Explicit B launch, not this file. |
+| **B.eval-smear** | live MIXED / block MOTION_CONFUSION; all SYSTEMATIC; PERP_NO_POSE | **Done (pre-retrain, dump-only).** | Do not retune cuts. |
+| **CA-train (retrain)** | Not started | **Gated on CONFIRMED_INFIDELITY + BLOCK_INFIDELITY; eval must include both banks, small-step tercile, and directional concentration.** | Explicit B launch, not this file. |
 | **C1 actor** | Gated off | **Re-opens** either via A-ACCUMULATION (closed-loop scorer) or B.4b (faithful-model scorer). | Whichever fires. |
 | **Scaling (token/model)** | Off | **Stays off.** | CA2 verdict; only a multi-task rank climb reopens it (future). |
 | **D6 / purity** | Keep | **Unchanged.** | n/a |
@@ -235,6 +240,7 @@ A run that only quotes live-bank median `frac` is an incomplete B.4a.
 | 2 | Fidelity fixed globally but wall-band still broken | Wall-band as a **named** success criterion |
 | 2 | Fidelity “fixed” on pusher-only short hops; block dynamics still lie | **B.eval-block** — block-moving bank required for B.4a |
 | 2 | Bank-median `frac` drops; small-step tercile stays ~2 and rollouts still drift | **B.eval-tercile** — small-step named target; tercile edges frozen pre |
+| 2 | Bank-median `frac` drops; 40° cone and ~88% perp fraction stay | **B.eval-smear** — cone + perp fraction + kNN cosine of `r` |
 | 3 | Fidelity fixed but hard-offset still fails | That is then the *clean* geometry result; acceptable, recorded |
 | 3 | Token still ~22-rank after retrain | Expected on PushT; token fills only multi-task (next phase) |
 
@@ -243,7 +249,7 @@ A run that only quotes live-bank median `frac` is an incomplete B.4a.
 ## Success criteria (overall)
 
 - **Part A done** = calibration checks pass (or instrument fixed), bracket `frac` computed as a distribution, guard recalibrated and pre-registered, **fork re-decided with reason recorded**.
-- **Part B done (if reached)** = B-baseline vs B-multistep trained matched; fidelity-fixed evaluated on live-bank **and** block-moving bank **and** small-step tercile; if passed, hard-offset PushT attempted with the light actor and result recorded.
+- **Part B done (if reached)** = B-baseline vs B-multistep trained matched; fidelity-fixed evaluated on live-bank **and** block-moving bank **and** small-step tercile **and** directional concentration; if passed, hard-offset PushT attempted with the light actor and result recorded.
 - **Phase pass** = either (a) A flips to ACCUMULATION and we save the retrain (re-open C1 closed-loop instead), or (b) A confirms infidelity, B-multistep demonstrably improves rollout fidelity over the matched baseline, and we can state whether a faithful pure-JEPA model solves hard PushT.
 - **Non-goals:** multi-task, token utilization, few-shot task config, real robots — all deferred to the next phase, which this fidelity result gates.
 
@@ -252,8 +258,9 @@ A run that only quotes live-bank median `frac` is an incomplete B.4a.
 ## Immediate actions
 
 1. **Part A first** — done: ruler calibrated, `frac` on the correct column, A-confirm **CONFIRMED_INFIDELITY**. Log + [`16a`](16a_infidelity_investigation.md).
-2. **Before launching B** — freeze B.4 numeric bars in `thresholds.yaml`; collect/specify the **block-moving** eval bank; wire small-step tercile reporting with **pre**-frozen edges.
-3. **Only then** — matched B-baseline + B-multistep, `n`-sweep, stop-grad ablation; `viz` pre/post drift **and** A5 full-space angle **and** tercile/`block` `frac`.
-4. Keep purity invariants asserted in code: no reach/reward grads into trunk (D6), token size fixed, SIGReg retained, targets stop-grad.
+2. **Pre-retrain eval** — done: block-moving bank, frozen tercile edges, smear-structure (systematic cone, not dead-leak).
+3. **Before launching B** — freeze B.4 numeric bars in `thresholds.yaml` (not from these pre numbers after the fact).
+4. **Only then** — matched B-baseline + B-multistep, `n`-sweep, stop-grad ablation; `viz` pre/post drift **and** A5 full-space angle **and** tercile/`block` `frac` **and** cone / perp fraction.
+5. Keep purity invariants asserted in code: no reach/reward grads into trunk (D6), token size fixed, SIGReg retained, targets stop-grad.
 
-**Part A did its job.** The fork is INFIDELITY on a validated ruler, with a wrong-direction map as the mechanism. Part B is **earned, not launched**. The two eval rules (block motion, small-step tercile) exist so the retrain is judged on what PushT needs, not on pusher-only average `frac`.
+**Part A did its job.** The fork is INFIDELITY on a validated ruler, with a wrong-direction map as the mechanism. Part B is **earned, not launched**. The eval rules (block motion, small-step tercile, directional concentration) exist so the retrain is judged on what PushT needs, not on pusher-only average `frac`.

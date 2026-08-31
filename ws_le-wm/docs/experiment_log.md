@@ -283,3 +283,20 @@ Live-bank dump-only slice (same frozen edges): parked-step `frac` 1.03 (n=1046) 
 
 Claim strengthens to pusher **and** block. Small-step tercile remains the named B target. Do not retune 2.0 or the tercile edges.
 
+---
+
+## 2026-08-31 — Smear structure (dump-only, pre-retrain)
+
+**Spec:** [`16a`](16a_infidelity_investigation.md) §5.3. Cuts frozen in `thresholds.yaml` `smear_structure` before reading shares. Script: `scripts/smear_structure.py`. Artifact: `eval_results/pusht/smear_structure/seed0/{live,block,live_seed1,live_seed2}.json`. Real 192-d `hf_pusht` dumps (unit tests use a 16-d fixture only). **Part B / C1 not started.**
+
+First 192-d ridge of Δpose from Δz went negative even for **true** Δz (overfit). Instrument was restricted to occupancy-live90 with a positive control; physics is only read when that control passes.
+
+| Bank | where | kNN cos (null) | Δpose R² from r | physics |
+|------|-------|----------------|-----------------|---------|
+| Live 0 / 1 / 2 | **MIXED** | 0.34 / 0.36 / 0.36 (null ~0.10) | −0.08 / 0.02 / −0.11 | **PERP_NO_POSE** (control 0.17 / 0.12 / 0.25) |
+| Block-moving | **MOTION_CONFUSION** | **0.44** (0.07) | −0.10 | **PERP_NO_POSE** (control 0.26) |
+
+All four arms **SYSTEMATIC**. Dead occupancy holds 31–35% of live-bank ‖r‖² and **14%** on the block bank (true Δz itself ~4–5% dead). Block-bank motion90 share **0.66**. Pose lives in the parallel component (R² 0.24–0.42), not in `r`.
+
+Retrain target: concentrate heading inside the motion span; drop perpendicular fraction and cone angle. Not “stop leaking into dead dims.”
+

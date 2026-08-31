@@ -5,7 +5,7 @@
 **Inherits:** posture + stability rules in `00_decisions.md`; diagnostics in `09`–`13`.
 **Stack:** `le-wm/` on stable-worldmodel; live eval; reuse existing dumps (`phase_b_dump/`, `c0_oracle_livebank/`).
 **Change control:** D6 keep is recorded in `00` (not a flip). D7 (asymmetry) stays proposed. Nothing gets built past a gate until the gate reports.
-**Status (2026-08-31):** CA0/CA1/CA2/CA3 ran (seed 0). Fork **CA0-INFIDELITY** was re-derived on median one-step `frac` → **CONFIRMED_INFIDELITY**, then **BLOCK_INFIDELITY** on a block-moving bank (`frac` 0.887, small-step tercile 1.70). C1 remains gated. CA-train / Part B is motivated and **not started**. Spec and as-run: [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md), [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md). Numbers: [`experiment_log.md`](experiment_log.md).
+**Status (2026-08-31):** CA0/CA1/CA2/CA3 ran (seed 0). Fork **CA0-INFIDELITY** was re-derived on median one-step `frac` → **CONFIRMED_INFIDELITY**, then **BLOCK_INFIDELITY** on a block-moving bank (`frac` 0.887, small-step tercile 1.70). Smear-structure: systematic cone, not dead-leak; block bank **MOTION_CONFUSION**. C1 remains gated. CA-train / Part B is motivated and **not started**. Spec and as-run: [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md), [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md). Numbers: [`experiment_log.md`](experiment_log.md).
 **Visual artifacts:** v3 implemented per [`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md) (`diagnostic_report.html`). v0 gallery record: [`15_viz_toolkit_spec_v0.md`](15_viz_toolkit_spec_v0.md). The scalar is the citable result; the figure motivates the next scalar.
 
 ---
@@ -135,7 +135,7 @@ This sharpens *which* fix, and it feeds the writeup's mechanism section either w
 |---|---|---|---|
 | **CA0 fork** | **CA0-INFIDELITY** (seed 0) | Recorded. `m=1` failed the teacher-force guard. | ACCUMULATION → protocol fix + re-open C1. INFIDELITY → CA-train. |
 | **C1 actor** | Gated off (C0 Outcome B; CA0 did not un-gate) | Stays off. | CA0-ACCUMULATION recorded. |
-| **CA-train (retrain)** | Not started | **Motivated** by CA0-INFIDELITY. Do not start from this file until explicitly specced. | CA0 reports per-step infidelity. |
+| **CA-train (retrain)** | Not started | **Motivated** by CONFIRMED_INFIDELITY + BLOCK_INFIDELITY. Spec and eval rules: [`16`](16_fidelity_retrain_plan.md). Do not start from this file. | Explicit B launch. |
 | **D6** | Keep/extract | **Unchanged.** | n/a in this plan. |
 | **Scaling (token/model)** | Off | **Stays off.** | CA2 shows rank→dim on a harder task (future). |
 | **Sep / new cost head** | Off | **Stays off.** | Not on any C-alt path. |

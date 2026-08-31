@@ -8,8 +8,8 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 |-----|---------|
 | [00_decisions.md](00_decisions.md) | Locked design decisions (source of truth for scope) |
 | [14_phase_c_alt_plan.md](14_phase_c_alt_plan.md) | C-alt localize-fidelity plan; CA0 INFIDELITY re-derived; CA-train not started |
-| [16_fidelity_retrain_plan.md](16_fidelity_retrain_plan.md) | Encoder-floor gate then (conditional) multi-step retrain; B.eval **BLOCK_INFIDELITY**; Part B not started |
-| [16a_infidelity_investigation.md](16a_infidelity_investigation.md) | Part A + A-confirm + B.eval findings: **CONFIRMED_INFIDELITY**, then **BLOCK_INFIDELITY** |
+| [16_fidelity_retrain_plan.md](16_fidelity_retrain_plan.md) | Encoder-floor gate then (conditional) multi-step retrain; B.eval **BLOCK_INFIDELITY**; smear done; Part B not started |
+| [16a_infidelity_investigation.md](16a_infidelity_investigation.md) | Part A + A-confirm + B.eval + smear: **CONFIRMED_INFIDELITY**, **BLOCK_INFIDELITY**, systematic cone not dead-leak |
 | [15_viz_toolkit_spec.md](15_viz_toolkit_spec.md) | Viz toolkit **v3** (implemented: tiers + diagnostic report) |
 | [15_viz_toolkit_spec_v0.md](15_viz_toolkit_spec_v0.md) | Viz toolkit **v0** (gallery; superseded as the writeup) |
 | [13_phase_c0_report.md](13_phase_c0_report.md) | Phase C0 confirmation gate (liveness, oracle, seeds, rank) |
@@ -65,6 +65,7 @@ Working documents for the **LeWM trunk + thin reachability projection `φ` + lat
 - **Phase C0 (run):** `P` is action-live on diverse actions (shuffle−true gap 1.77). Live-bank oracle: replay **94%**, CEM-L2 **50%**, imagine toward-goal **2%** (‖ẑ_end−z\*‖ 8.23 vs start 2.61) → **Outcome B, model fidelity.** Do not build C1. Writeup: [`13_phase_c0_report.md`](13_phase_c0_report.md).
 - **C-alt CA0–CA3 (run, seed 0):** **CA0-INFIDELITY** (`m=1` toward 84% / d_end 1.43; `m=25` matches C0 8.23 / 2%). That 1.43 is distance-to-goal, not the one-step residual. CA1–CA3 unchanged. Compact: [`experiment_log.md`](experiment_log.md).
 - **Part A + A-confirm (2026-08-31):** fork re-derived on median one-step `frac`. Live-bank seeds 0–2 **0.99 / 1.09 / 0.99**; random-action **1.40** → **CONFIRMED_INFIDELITY**. Wrong-direction map (~41–46°), not frozen/deaf. Writeup: [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md).
-- **B.eval-block / B.eval-tercile (2026-08-31):** block-moving bank n=50, `frac` **0.887**, small-step tercile **1.70**, angle ~51° → **BLOCK_INFIDELITY**. Claim is pusher **and** block. Plan: [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md). **Part B / C1 not started.**
+- **B.eval-block / B.eval-tercile (2026-08-31):** block-moving bank n=50, `frac` **0.887**, small-step tercile **1.70**, angle ~51° → **BLOCK_INFIDELITY**. Claim is pusher **and** block. Plan: [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md).
+- **Smear structure (2026-08-31):** live **MIXED**, block **MOTION_CONFUSION**; all **SYSTEMATIC**; **PERP_NO_POSE**. kNN cosine 0.34–0.44 vs null ~0.1. Dead-leak is not the majority. Writeup: [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md) §5.3. **Part B / C1 not started.**
 - **Next:** CA-train / Part B only when explicitly launched. Not Sep, not a new cost head, not C1. Viz v3 is in the tree ([`15_viz_toolkit_spec.md`](15_viz_toolkit_spec.md)).
 - **Env:** PushT is the claim env; Reacher is diagnostic only (dropped from the PushT legibility claim).

@@ -1,12 +1,12 @@
 # Implementation status — what is in the tree
 
-**Date:** 2026-08-30  
+**Date:** 2026-08-31  
 **Repo:** `ws_weltmodelle` `feat/lewm-phi` · submodule `ws_le-wm/le-wm` same branch  
-**Normative plan:** [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md) (CA0 reported INFIDELITY; CA-train not started)  
+**Normative plan:** [`16_fidelity_retrain_plan.md`](16_fidelity_retrain_plan.md) (CONFIRMED_INFIDELITY + BLOCK_INFIDELITY; smear-structure done; Part B not started). C-alt localize spec: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md).  
 **Runtime:** [`../../docs/docker_usage.md`](../../docs/docker_usage.md)  
-**Numbers:** [`11_phase_b_report.md`](11_phase_b_report.md) (Phase B) · [`13_phase_c0_report.md`](13_phase_c0_report.md) (C0) · [`experiment_log.md`](experiment_log.md) (compact). D6 **keep**; [`00_decisions.md`](00_decisions.md) records that keep (not a flip).
+**Numbers:** [`11_phase_b_report.md`](11_phase_b_report.md) (Phase B) · [`13_phase_c0_report.md`](13_phase_c0_report.md) (C0) · [`experiment_log.md`](experiment_log.md) (compact) · [`16a_infidelity_investigation.md`](16a_infidelity_investigation.md) (fork + smear). D6 **keep**; [`00_decisions.md`](00_decisions.md) records that keep (not a flip).
 
-This file records **what is in the tree**. C-alt dumps (CA0/CA1) and the dump-driven viz toolkit are in; **CA-train and C1 are not**. Do not start C1.
+This file records **what is in the tree**. Encoder-floor, A-confirm, block-moving eval, smear-structure, and the dump-driven viz toolkit are in; **CA-train / Part B and C1 are not**. Do not start C1.
 
 ---
 
@@ -90,7 +90,7 @@ Spec: [`14_phase_c_alt_plan.md`](14_phase_c_alt_plan.md). Viz **v3** (what lande
 
 ## 6. Encoder-floor / B.eval (2026-08-31)
 
-Cuts frozen in `le-wm/thresholds.yaml` (`encoder_floor`, `infidelity_confirm`, `b_eval_block`, `b_eval_tercile`). Do not retune. **Part B not started.**
+Cuts frozen in `le-wm/thresholds.yaml` (`encoder_floor`, `infidelity_confirm`, `b_eval_block`, `b_eval_tercile`, `smear_structure`). Do not retune. **Part B not started.**
 
 | Surface | Path |
 |---------|------|
@@ -98,5 +98,6 @@ Cuts frozen in `le-wm/thresholds.yaml` (`encoder_floor`, `infidelity_confirm`, `
 | A-confirm | `scripts/infidelity_confirm.py`, `scripts/test_infidelity_confirm.py` |
 | Block-moving pairs | `eval_logging/oracle_bank.py` `window_block_moving_pairs` |
 | B.eval-block / tercile | `scripts/block_motion_eval.py` |
+| Smear structure | `scripts/smear_structure.py`, `scripts/test_smear_structure.py` |
 
-Artifacts (gitignored dumps): `eval_results/pusht/encoder_floor/seed0/`, `infidelity_confirm/`, `block_motion_eval/seed0/`.
+Artifacts (gitignored dumps): `eval_results/pusht/encoder_floor/seed0/`, `infidelity_confirm/`, `block_motion_eval/seed0/`, `smear_structure/seed0/`.
